@@ -49,6 +49,12 @@ function NavBar() {
                 <NavLink to="/contact" className="rounded-md px-3 py-2 text-m hover:bg-zinc-100">Contact</NavLink>
               </NavigationMenu.Link>
             </NavigationMenu.Item>
+
+            <NavigationMenu.Item>
+              <NavigationMenu.Link asChild>
+                <NavLink to="/plans" className="rounded-md px-3 py-2 text-m hover:bg-zinc-100">Plans</NavLink>
+              </NavigationMenu.Link>
+            </NavigationMenu.Item>
             
 
           </NavigationMenu.List>
@@ -78,6 +84,12 @@ function NavBar() {
 
             <DropdownMenu.Portal>
               <DropdownMenu.Content className="DropdownMenuContent flex flex-col gap-2 bg-gray-200 p-4 shadow-md rounded" sideOffset={5}>
+                {/* Dropdown Menu Items */}
+                
+                <DropdownMenu.Item className="DropdownMenuItem font-semibold text-white bg-teal-500 py-2 px-4 hover:bg-teal-600 rounded">
+                  <Link to="/post">Create a Post</Link>
+                </DropdownMenu.Item>
+
                 <DropdownMenu.Item className="DropdownMenuItem py-2 px-4 hover:bg-zinc-100 rounded">
                   <Link to="/account">Account</Link>
                 </DropdownMenu.Item>
@@ -87,6 +99,7 @@ function NavBar() {
                 <DropdownMenu.Item className="DropdownMenuItem text-red-500 py-2 px-4 hover:bg-zinc-100 rounded">
                   <button className="cursor-pointer"onClick={logout}>Logout</button>
                 </DropdownMenu.Item>
+
               </DropdownMenu.Content>
             </DropdownMenu.Portal>
           </DropdownMenu.Root>

@@ -9,12 +9,16 @@ import About from './pages/About/About'
 import Wall from './pages/Wall/Wall'
 import Contact from './pages/Contact/Contact'
 import Account from './pages/Account/Account'
+import Post from './pages/Post/Post'
+import Plans from './pages/Plans/Plans'
 // Auth Layout Routes
 import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup'
 import CheckEmail from './pages/CheckEmail/CheckEmail'
 // NotFound
 import NotFound from './pages/NotFound/NotFound'
+
+
 
 
 
@@ -31,6 +35,8 @@ function App() {
         <Route path="wall" element={<Wall />}/>
         <Route path="contact" element={<Contact />}/>
         <Route path="account" element={<Account />}/>
+        <Route path="post" element={<Post />}/>
+        <Route path="plans" element={<Plans />}/>
       </Route>
 
       {/* Auth Layout (No NavBar) */}
