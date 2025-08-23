@@ -3,25 +3,20 @@ import React from 'react'
 import { NavigationMenu, Avatar } from 'radix-ui'
 import { DropdownMenu } from "radix-ui";
 import {
-	HamburgerMenuIcon,
-	DotFilledIcon,
-	CheckIcon,
-	ChevronRightIcon,
-  GearIcon,
-  ArrowDownIcon,
   ChevronDownIcon,
   PersonIcon,
 } from "@radix-ui/react-icons";
 // ReactRouter
 import { Link, NavLink } from 'react-router-dom'
 // Deakin Logos
-import DeakinLogo from '../../assets/deakin-logo.png'
 import DeakinBadge from '../../assets/deakin-logo-badge.png'
 // Auth
 import { useAuth } from '../../AuthContext'
 
 function NavBar() {
   const { user, loading, logout } = useAuth();
+  const signedIn = !!user && !user.isAnonymous;
+
   return (
     <header className="flex justify-center bg-gray-200 p-4">
       <nav className="flex mx-auto w-full max-w-screen-xl justify-between items-center">
@@ -61,19 +56,19 @@ function NavBar() {
         </NavigationMenu.Root>
 
         {/* Auth Links*/}
-        {user ? (
+        {signedIn ? (
           <div className="flex items-center gap-4">
             <Avatar.Root className="AvatarRoot">
               <Avatar.Image
                 className="AvatarImage h-8"
-                src={user.photoURL}
+                src={user?.photoURL}
                 alt="User Avatar Image"
               />
               <Avatar.Fallback className="AvatarFallback" delayMs={600}>
                 <PersonIcon className="w-5 h-5"/>
               </Avatar.Fallback>
             </Avatar.Root>
-            {user.displayName ? user.displayName : user.email}
+            {user?.displayName ? user?.displayName : user?.email}
         {/* Drop Down */}
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>

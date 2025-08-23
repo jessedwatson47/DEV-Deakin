@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import FileUpload from '../FileUpload/FileUpload';
+import { useAuth } from '../../AuthContext';
+import { createPost } from '../../utils/firebase';
 
 function NewPost() {
+    const { user } = useAuth();
 
     const [post, setPost] = useState({
         postType: "question",
@@ -36,10 +39,27 @@ function NewPost() {
     }
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        if (!user.uid) {
+            alert("Please login");
+            return
+        }
+
+        try {
+        createPost(post);
+        alert("Post created!");
+        } catch (err) {
+        console.error(err);
+        alert("Failed to create post");
+        }
+    };
+
     console.log(post);
 
   return (
-    <form className="flex flex-col gap-6 bg-zinc-100 min-h-[50dvh] w-[30dvw] self-center p-10 rounded ring-1 ring-zinc-300">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6 bg-zinc-100 min-h-[50dvh] w-[30dvw] self-center p-10 rounded ring-1 ring-zinc-300">
             <div className="flex gap-4">
                 <div className="flex gap-1">
                     <input type="radio" name="postType" id="question" value="question" checked={post.postType === "question"} onChange={handleChange}></input>

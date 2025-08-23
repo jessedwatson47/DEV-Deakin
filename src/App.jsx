@@ -17,6 +17,7 @@ import Signup from './pages/Signup/Signup'
 import CheckEmail from './pages/CheckEmail/CheckEmail'
 // NotFound
 import NotFound from './pages/NotFound/NotFound'
+import SignedInGuard from './SignedInGuard'
 
 
 
@@ -34,8 +35,6 @@ function App() {
         <Route path="about" element={<About />}/>
         <Route path="wall" element={<Wall />}/>
         <Route path="contact" element={<Contact />}/>
-        <Route path="account" element={<Account />}/>
-        <Route path="post" element={<Post />}/>
         <Route path="plans" element={<Plans />}/>
       </Route>
 
@@ -44,6 +43,12 @@ function App() {
         <Route path="/login" element={<Login />}/>
         <Route path="/signup" element={<Signup />}/>
         <Route path="/check-email" element={<CheckEmail />}/>
+      </Route>
+
+      {/* Protected Routes */}
+      <Route element={<SignedInGuard />}>
+        <Route path="account" element={<Account />}/>
+        <Route path="post" element={<Post />}/>
       </Route>
 
       {/* Non-existent path returns 404 */}

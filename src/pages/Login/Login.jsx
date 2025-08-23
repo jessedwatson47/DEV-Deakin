@@ -2,22 +2,26 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../AuthContext';
-import { createUserDocFromAuth, sendPasswordReset, signInWithGooglePopup } from '../../utils/firebase';
+import { sendPasswordReset } from '../../utils/firebase';
 import { Form } from 'radix-ui';
-import { signIn } from '../../utils/firebase';
 import AlertModal from '../../components/AlertModal/AlertModal';
 import {CheckCircledIcon} from '@radix-ui/react-icons'
+import { continueWithEmailPassword, continueWithGoogle } from '../../utils/firebase';
 
 function Login() {
-   const { user, loading } = useAuth();
     const navigate = useNavigate();
+
+    const { user, loading } = useAuth();
+
+
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState("");
     const [resetMsg, setResetMsg] = useState("");
 
+
     // Effect
     useEffect(() => {
-        if (!loading && user) navigate("/", {replace:true});
+        if (!loading && user && !user.isAnonymous) navigate("/", {replace:true});
     }, [user, loading, navigate]);
 
     // State
@@ -36,12 +40,13 @@ function Login() {
     })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setError("");
+        setSubmitting(true);
         try {
-          setSubmitting(true);
-          signIn(contact.email, contact.password);
+          await continueWithEmailPassword(contact.email, contact.password);
+          navigate("/", { replace: true });
         } catch (err) {
           console.log(err.message);
           setError(err.message);
@@ -52,10 +57,18 @@ function Login() {
 
     const loginWithGoogle = async(e) => {
         e.preventDefault();
-        const {user} = await signInWithGooglePopup();
-        const userDocRef = await createUserDocFromAuth(user);
-        navigate("/", { replace: true });
-    }
+        setError("");
+        setSubmitting(true);
+        try {
+          await continueWithGoogle();
+          console.log(user);
+        } catch (err) {
+          console.log(err.message);
+          setError(err.message);
+        } finally {
+          setSubmitting(false);
+        }
+    };
 
     const handleReset = async(e) => {
       e.preventDefault();

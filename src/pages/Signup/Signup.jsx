@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import { createUser, createUserDocFromAuth, sendVerification } from "../../utils/firebase";
+import { sendVerification } from "../../utils/firebase";
 import { Form } from 'radix-ui';
 import { useAuth } from '../../AuthContext';
 

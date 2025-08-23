@@ -2,17 +2,23 @@ import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../AuthContext';
 import { Avatar } from 'radix-ui';
 import { PersonIcon, CheckCircledIcon, CrossCircledIcon } from '@radix-ui/react-icons';
+import { useNavigate } from 'react-router-dom';
+import { linkGoogle } from '../../utils/firebase';
 
 
 
 function Account() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [verified, setVerified] = useState(false);
   console.log(user);
 
   useEffect(() => {
     if (user?.emailVerified) {
       setVerified(true);
+    if (user.isAnonymous) {
+      navigate('/', { replace : true });
+    }
     }
   },[]);
 
@@ -44,6 +50,7 @@ function Account() {
           <div className="bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10">{user?.email ?? "Default"}</div>
         </div>
      
+        <button className="bg-teal-500 p-2 cursor-pointer text-white" onClick={linkGoogle}>Link Google Account</button>
       </article>
     </section>
   )
