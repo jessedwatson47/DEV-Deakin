@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import FileUpload from '../FileUpload/FileUpload';
 import { useAuth } from '../../AuthContext';
 import { createPost } from '../../utils/firebase';
+import { Toast } from 'radix-ui';
 
 function NewPost() {
     const { user } = useAuth();
+    const [toast, setToast] = useState({title: "", description: "", ok: true})
+    const [open, setOpen] = useState(false);
 
     const [post, setPost] = useState({
         postType: "question",
@@ -14,6 +17,7 @@ function NewPost() {
         abstract: "",
         article: "",
         imageUrl: "",
+        uid: user.uid,
     });
 
 
@@ -48,17 +52,35 @@ function NewPost() {
         }
 
         try {
-        createPost(post);
-        alert("Post created!");
+            createPost(post);
+            setToast({title: "Success!", description: "Post created, go check what people have to say about it.", ok: true})
         } catch (err) {
-        console.error(err);
-        alert("Failed to create post");
+            console.error(err);
+            setToast({title: "Oops!", description: "Failed to create post, please try again.", ok: false})
+        } finally {
+            setOpen(true);
         }
     };
 
     console.log(post);
 
   return (
+    <>
+    <Toast.Root
+            open={open}
+            onOpenChange={setOpen}
+            className={`rounded-lg border px-4 py-3 shadow bg-white ${
+              toast.ok ? "border-emerald-300" : "border-red-300"
+            }`}
+          >
+            <Toast.Title className="font-medium">{toast.title}</Toast.Title>
+            {toast.description && (
+              <Toast.Description className="mt-1 text-sm text-zinc-600">
+                {toast.description}
+              </Toast.Description>
+            )}
+            <Toast.Close className="absolute right-2 top-2">×</Toast.Close>
+          </Toast.Root>
     <form onSubmit={handleSubmit} className="flex flex-col gap-6 bg-zinc-100 min-h-[50dvh] w-[30dvw] self-center p-10 rounded ring-1 ring-zinc-300">
             <div className="flex gap-4">
                 <div className="flex gap-1">
@@ -113,6 +135,7 @@ function NewPost() {
         
         <button className="rounded bg-zinc-900 px-3 py-2 text-m text-white font-medium hover:opacity-90">Post</button>
     </form>
+    </>
   )
 }
 

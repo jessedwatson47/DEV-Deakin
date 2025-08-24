@@ -1,36 +1,66 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth, logout, anonAuth } from "./utils/firebase.js";
 import { onAuthStateChanged } from "firebase/auth";
+import { auth, authReady, logout, anonAuth, fetchUser } from "./utils/firebase.js";
 
 const AuthCtx = createContext(null);
 export const useAuth = () => useContext(AuthCtx);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [userLoading, setUserLoading] = useState(true);
+  const [userData, setUserData] = useState(null);
 
- useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-    })
+  
+  useEffect(() => {
+    let unsub;
 
-    if (!auth.currentUser) {
-      (async () => {
-        try {
-        const u = await anonAuth();
+    (async () => {
+      await authReady;
+
+      unsub = onAuthStateChanged(auth, async (u) => {
+        if (!u) {
+          try {
+            const anon = await anonAuth();
+            setUser(anon);
+          } catch (e) {
+            console.error("Anon sign-in failed:", e);
+          }
+        }
         setUser(u);
-        setLoading(false);
-        console.log(u);
-      } catch (err) {
-        console.log(err.message);
-      }
-      })();
+        setAuthLoading(false);
+      });
+    })();
+    return () => unsub && unsub();
+  }, []);
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user?.uid) {
+      setUserData(null);
+      setUserLoading(false);
+      return;
     }
-    return unsub;
-  },[]);
+
+    let alive = true;
+    setUserLoading(true);
+
+     (async () => {
+      try {
+        const data = await fetchUser(user);
+        if (alive) setUserData(data);
+      } catch (err) {
+        console.log("Failed to fetch user");
+        if (alive) setUserData(null);
+      } finally {
+        if (alive) setUserLoading(false);
+      }
+    })();
+    return () => { alive = false; };
+  }, [authLoading, user?.uid]);
 
   return (
-    <AuthCtx.Provider value={{ user, loading, logout }}>
+    <AuthCtx.Provider value={{ user, authLoading, userLoading, logout, userData }}>
       {children}
     </AuthCtx.Provider>
   );

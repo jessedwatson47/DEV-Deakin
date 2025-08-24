@@ -15,10 +15,16 @@ import Plans from './pages/Plans/Plans'
 import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup'
 import CheckEmail from './pages/CheckEmail/CheckEmail'
+// Account Sections
+import Connections from './pages/Account/sections/Connections'
+import Security from './pages/Account/sections/Security'
+import Basic from './pages/Account/sections/Basic'
+
 // NotFound
 import NotFound from './pages/NotFound/NotFound'
 import SignedInGuard from './SignedInGuard'
 
+import { Toast } from 'radix-ui'
 
 
 
@@ -28,32 +34,49 @@ function App() {
 
   return (
     <>
-    <Routes>
-      {/* Main Layout */}
-      <Route element={<MainLayout />}>
-        <Route index element={<Home />}/>
-        <Route path="about" element={<About />}/>
-        <Route path="wall" element={<Wall />}/>
-        <Route path="contact" element={<Contact />}/>
-        <Route path="plans" element={<Plans />}/>
-      </Route>
+    <Toast.Provider swipeDirection="right" duration={3500}>
+      <Routes>
+        {/* Main Layout */}
+        <Route element={<MainLayout />}>
+          <Route index element={<Home />}/>
+          <Route path="about" element={<About />}/>
+          <Route path="wall" element={<Wall />}/>
+          <Route path="contact" element={<Contact />}/>
+          <Route path="plans" element={<Plans />}/>
+        </Route>
 
-      {/* Auth Layout (No NavBar) */}
-      <Route element={<AuthLayout />}>
-        <Route path="/login" element={<Login />}/>
-        <Route path="/signup" element={<Signup />}/>
-        <Route path="/check-email" element={<CheckEmail />}/>
-      </Route>
+        {/* Auth Layout (No NavBar) */}
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<Login />}/>
+          <Route path="/signup" element={<Signup />}/>
+          <Route path="/check-email" element={<CheckEmail />}/>
+        </Route>
 
-      {/* Protected Routes */}
-      <Route element={<SignedInGuard />}>
-        <Route path="account" element={<Account />}/>
-        <Route path="post" element={<Post />}/>
-      </Route>
+        {/* Protected Routes */}
+        <Route element={<SignedInGuard />}>
+          <Route path="post" element={<Post />}/>
+          {/* Account */}
+          <Route path="account" element={<Account />}>
+            <Route index element={<Basic />}/>
+            <Route path="connections" element={<Connections />}/>
+            <Route path="security" element={<Security />}/>
+          </Route>
+          
+        </Route>
 
-      {/* Non-existent path returns 404 */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        {/* Non-existent path returns 404 */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+
+      <Toast.Viewport
+        className="
+          fixed bottom-4 right-4 z-[9999]
+          flex flex-col gap-2 w-[360px] max-w-[100vw]
+          outline-none
+        "
+      />
+
+    </Toast.Provider>
     </>
   )
 }
