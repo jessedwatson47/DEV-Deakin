@@ -126,7 +126,14 @@ function NewPost() {
                 <label htmlFor="question-content">Question</label>
                 <textarea className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-40 w-full resize-none" name="question" id="question-content" onChange={handleChange}/>
                 <label htmlFor="question-tags">Tags</label>
-                <input className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="tags" id="question-tags" onKeyDown={handleKeyDown} placeholder="Press Enter to add a tag"/>
+                <input className="mb-2 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="tags" id="question-tags" onKeyDown={handleKeyDown} placeholder="Press Enter to add a tag"/>
+                <div className="flex gap-2">
+                    {post.tags.map(tag => (
+                    <div className="bg-transparent text-zinc-900 ring-1 ring-zinc-400 text-xs font-semibold w-fit py-1 px-3 rounded-full tracking-wide">
+                        {tag}
+                    </div>
+                ))}
+                </div>
             </div>
         </>
         )}
