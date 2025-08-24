@@ -59,6 +59,7 @@ export function AuthProvider({ children }) {
     return () => { alive = false; };
   }, [authLoading, user?.uid]);
 
+    console.log(user);
   return (
     <AuthCtx.Provider value={{ user, authLoading, userLoading, logout, userData }}>
       {children}
