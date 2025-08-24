@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import FileUpload from '../FileUpload/FileUpload';
 import { useAuth } from '../../AuthContext';
-import { createPost } from '../../utils/firebase';
+import { createPost, uploadImage } from '../../utils/firebase';
 import { Toast } from 'radix-ui';
+
 
 function NewPost() {
     const { user } = useAuth();
     const [toast, setToast] = useState({title: "", description: "", ok: true})
     const [open, setOpen] = useState(false);
+    const [fileName, setFileName] = useState("No file chosen");
+    const [file, setFile] = useState();
+    const [imageUrl, setImageUrl] = useState("");
 
     const [post, setPost] = useState({
         postType: "question",
@@ -17,16 +21,30 @@ function NewPost() {
         abstract: "",
         article: "",
         imageUrl: "",
-        uid: user.uid,
     });
 
 
-     const handleChange = (e) => {
+    const handleChange = (e) => {
         const {name, value} = e.target;
         setPost( (prev) => {
             return {...prev, [name]: value}
     })
     }
+
+    const handleUploadChange = (e) => {
+        setFile(e.target.files[0]);
+        setFileName(e.target.files[0].name)
+    }
+
+    const handleUpload = async () => {
+        if (!file) return;
+        const url = await uploadImage(file);
+        setImageUrl(url);
+        setPost( (prev) => {
+            return {...prev, imageUrl: url}
+        })
+    }
+
 
     const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -66,6 +84,7 @@ function NewPost() {
 
   return (
     <>
+    {/* Toast */}
     <Toast.Root
             open={open}
             onOpenChange={setOpen}
@@ -81,6 +100,8 @@ function NewPost() {
             )}
             <Toast.Close className="absolute right-2 top-2">×</Toast.Close>
           </Toast.Root>
+        
+     {/*Form  */}
     <form onSubmit={handleSubmit} className="flex flex-col gap-6 bg-zinc-100 min-h-[50dvh] w-[30dvw] self-center p-10 rounded ring-1 ring-zinc-300">
             <div className="flex gap-4">
                 <div className="flex gap-1">
@@ -99,7 +120,7 @@ function NewPost() {
         <>  
             <h3 className="text-lg font-semibold">What do you want to ask?</h3>
             <div className="flex flex-col gap-1">
-                <FileUpload />
+                <FileUpload file={file} fileName={fileName} handleUpload={handleUpload} handleUploadChange={handleUploadChange} uploadImage={uploadImage} imageUrl={imageUrl}/>
                 <label htmlFor="question-title">Title</label>
                 <input className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="title" onChange={handleChange} id="question-title" placeholder="Start your question with how, what, why, etc."/>
                 <label htmlFor="question-content">Question</label>
@@ -113,7 +134,7 @@ function NewPost() {
             <>  
             <h3 className="text-lg font-semibold">What do you want to share?</h3>
             <div className="flex flex-col gap-1">
-                <FileUpload />
+                <FileUpload file={file} fileName={fileName} handleUpload={handleUpload} handleUploadChange={handleUploadChange} uploadImage={uploadImage} imageUrl={imageUrl}/>
                 <label htmlFor="article-title">Title</label>
                 <input className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="title" onChange={handleChange} id="article-title" placeholder="Enter a descriptive title"/>
                 <label htmlFor="article-abstract">Abstract</label>

@@ -5,6 +5,12 @@ import PostCard from "../../components/PostCard/PostCard";
 export default function Wall() {
   const [posts, setPosts] = useState(null);
   const [err, setErr] = useState(null);
+  // function timeSincePost(time) {
+  //   const postTime = time.ToDate().ToLocaleString();
+  //   const currentTime = Date().ToLocaleString();
+  //   const timeSince = currentTime - postTime;
+  //   return timeSince;
+  // }
 
   useEffect(() => {
     (async () => {
@@ -23,10 +29,13 @@ export default function Wall() {
   if (!posts) return <p>Loading…</p>;
 
   return (
-    <ul className="space-y-3">
+    <section className="max-w-screen-xl mx-auto">
+    <div className="flex flex-col gap-4">
       {posts.map(p => (
-        <PostCard postType={p.postType} question={p.question} abstract={p.abstract} article={p.article} imgUrl={p.imgUrl} imgAlt={p.imgAlt} title={p.title} desc={p.desc} tags={p.tags} rating="5" author={p.userId} width="w-[300px]" height="h-fit" ></PostCard>
+        <PostCard imageUrl={p.imageUrl} postType={p.postType} question={p.question} abstract={p.abstract} article={p.article} imgUrl={p.imgUrl} imgAlt={p.imgAlt} title={p.title} desc={p.desc} tags={p.tags} author={p.userId} width="w-[400px]" height="h-fit" createdAt={p.createdAt.toDate().toLocaleString()}></PostCard>
       ))}
-    </ul>
+    </div>
+    </section>
   );
+  
 }
