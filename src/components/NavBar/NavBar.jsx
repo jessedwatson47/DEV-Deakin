@@ -14,7 +14,7 @@ import DeakinBadge from '../../assets/deakin-logo-badge.png'
 import { useAuth } from '../../AuthContext'
 
 function NavBar() {
-  const { user, loading, logout } = useAuth();
+  const { user, userData, authLoading, userLoading, logout } = useAuth();
   const signedIn = !!user && !user.isAnonymous;
 
   return (
@@ -60,8 +60,8 @@ function NavBar() {
           <div className="flex items-center gap-4">
             <Avatar.Root className="AvatarRoot">
               <Avatar.Image
-                className="AvatarImage h-8"
-                src={user?.photoURL}
+                className="h-8 w-8 rounded-full object-cover shadow-lg"
+                src={user?.photoURL || userData?.photoURL}
                 alt="User Avatar Image"
               />
               <Avatar.Fallback className="AvatarFallback" delayMs={600}>

@@ -3,15 +3,22 @@ import { useAuth } from '../../../AuthContext';
 import { Avatar, Toast } from 'radix-ui';
 import { PersonIcon, CheckCircledIcon, CrossCircledIcon, Pencil2Icon, CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
 import Spinner from '../../../components/Spinner/Spinner';
-import { sendVerification, updateDisplayName } from '../../../utils/firebase';
+import { sendVerification, updateDisplayName, updateDisplayPicture, uploadImage } from '../../../utils/firebase';
+import FileUpload from '../../../components/FileUpload/FileUpload';
 
 function Basic() {
-  const { userLoading, user, userData } = useAuth();
+  const { userLoading, user, userData, refreshUser } = useAuth();
   const [verified, setVerified] = useState(false);
   const [toast, setToast] = useState({title: "", description: "", ok: true})
   const [open, setOpen] = useState(false);
-  const [editing, setEditing] = useState(false);
+  const [editingName, setEditingName] = useState(false);
   const [newDisplayName, setNewDisplayName] = useState("");
+  const [editingDisplayPicture, setEditingDisplayPicture] = useState(false);
+  
+  const [fileName, setFileName] = useState("No file chosen");
+  const [file, setFile] = useState();
+  const [imageUrl, setImageUrl] = useState("");
+  // const [newDisplayPicture, setNewDisplayPicture] = useState(false); ues this to try and preview new pfp and replace avatar..
 
   if (userLoading) return (
     <article className="flex flex-col gap-6 bg-zinc-100 min-h-[50dvh] w-[500px] self-center p-10 rounded items-center justify-center">
@@ -30,12 +37,39 @@ function Basic() {
       }
     }
 
-    const handleDisplayToggle = () => {
-      setEditing(p => !p);
+    const handleDisplayNameToggle = () => {
+      setEditingName(p => !p);
+    }
+
+    const handleDisplayPictureToggle = () => {
+      setEditingDisplayPicture(p => !p);
     }
     
     const handleDisplayNameChange = (e) => {
       setNewDisplayName(e.target.value);
+    }
+
+    const handleUploadChange = (e) => {
+        setFile(e.target.files[0]);
+        setFileName(e.target.files[0].name)
+    }
+
+    const handleUpload = async () => {
+        if (!file) return;
+        try {
+          const url = await uploadImage(file);
+          setImageUrl(url);
+          await updateDisplayPicture(url);
+          await refreshUser();
+          setToast({title: "Success!", description: "Display picture updated successfully!", ok: true})
+        }
+        catch (err) {
+          console.log("Error uploading file / updating display picture", err)
+          setToast({title: "Oops!", description: "Display picture updated failed to update. Please try again.", ok: false})
+        } finally {
+          setOpen(true);
+          setEditingDisplayPicture(false);
+        }   
     }
 
     const changeDisplayName = async () => {
@@ -47,7 +81,7 @@ function Basic() {
         console.log(err);
         setToast({title: "Oops!", description: `Please try changing your display name again.`, ok: false})
       } finally {
-        setEditing(false);
+        setEditingName(false);
         setOpen(true);
       }
     }
@@ -73,29 +107,32 @@ function Basic() {
 
       <article className="flex flex-col gap-6 bg-zinc-100 min-h-[50dvh] w-[500px] self-center p-10 rounded">
         {/* Avatar */}
-        <Avatar.Root className="AvatarRoot">
+        <Avatar.Root className="relative w-fit">
           <Avatar.Image
-            className="AvatarImage w-20 h-20"
-            src={user?.photoURL ?? undefined}
+            className="rounded-full w-20 h-20 ring-2 ring-zinc-300 object-cover shadow-lg"
+            src={(userData?.photoURL || imageUrl) ?? undefined}
             alt="User Avatar Image"
           />
+    
           <Avatar.Fallback className="AvatarFallback" delayMs={600}>
             <PersonIcon className="w-20 h-20"/>
           </Avatar.Fallback>
+          {editingDisplayPicture ? <div className="mt-4"><FileUpload fileName={fileName} file={file} handleUpload={handleUpload} handleUploadChange={handleUploadChange} /></div> : <button onClick={handleDisplayPictureToggle} className="absolute right-0 top-0 text-zinc-500 hover:bg-zinc-200 cursor-pointer rounded"><Pencil2Icon/></button>}
+          
         </Avatar.Root>
         {/* Display Name */}
         <div className="flex flex-col gap-2">
           Display Name
-          {editing 
+          {editingName 
             ? 
             <div className="relative">
               <input type="text" name="newDisplayName" value={newDisplayName} onChange={handleDisplayNameChange} className="bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full"></input>
-              <span className="absolute left-2 top-[20%]">{user.displayName}</span>
+              <span className="absolute left-2 top-[20%]">{newDisplayName ? "" : user.displayName}</span>
               <button className="h-full hover:bg-emerald-100 rounded p-2 cursor-pointer absolute right-10" onClick={changeDisplayName}><CheckIcon/></button>
-              <button className="h-full hover:bg-red-100 rounded p-2 cursor-pointer absolute right-2" onClick={handleDisplayToggle}><Cross2Icon/></button>
+              <button className="h-full hover:bg-red-100 rounded p-2 cursor-pointer absolute right-2" onClick={handleDisplayNameToggle}><Cross2Icon/></button>
             </div>
             : 
-            <div className="bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10">{user?.displayName ?? undefined }<button className="float-right h-full hover:bg-zinc-100 rounded p-1 cursor-pointer" onClick={handleDisplayToggle}><Pencil2Icon/></button></div>
+            <div className="bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10">{user?.displayName ?? undefined }<button className="float-right h-full hover:bg-zinc-100 rounded p-1 cursor-pointer" onClick={handleDisplayNameToggle}><Pencil2Icon/></button></div>
             }
         </div>
         {/* Email */}

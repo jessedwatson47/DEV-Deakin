@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, reload } from "firebase/auth";
 import { auth, authReady, logout, anonAuth, fetchUser } from "./utils/firebase.js";
 
 const AuthCtx = createContext(null);
@@ -59,9 +59,16 @@ export function AuthProvider({ children }) {
     return () => { alive = false; };
   }, [authLoading, user?.uid]);
 
+  const refreshUser = async () => {
+    if (!auth.currentUser) return null;
+    await reload(auth.currentUser);
+    setUser({...auth.currentUser})
+    return auth.currentUser;
+  }
+
     console.log(user);
   return (
-    <AuthCtx.Provider value={{ user, authLoading, userLoading, logout, userData }}>
+    <AuthCtx.Provider value={{ user, authLoading, userLoading, logout, userData, refreshUser }}>
       {children}
     </AuthCtx.Provider>
   );
