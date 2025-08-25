@@ -20,7 +20,7 @@ function PostCard({postType, question, abstract, article, imageUrl, imageAlt, ti
             </div>
             <div className="flex justify-between">
                 {rating ? <div className="flex gap-1 items-center"><StarFilledIcon className="text-yellow-500"/>{rating}</div> : ""}
-                <span className="text-zinc-500 text-xs">{createdAt}</span>
+                <span className="text-zinc-300 text-xs">{createdAt}</span>
                 <div className="flex gap-2">
                     <img className="w-4 h-4 rounded-full" src={authorPhoto}></img>
                     <span className="text-zinc-500 text-xs">{author}</span>

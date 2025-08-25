@@ -17,10 +17,10 @@ function Plans() {
                     <p>Explore free features with limited access</p>
                     <div className="h-[1px] bg-zinc-200 w-full"></div>
                     <ul className="flex flex-col gap-4">
-                        <li className="flex gap-2 items-center text-green-500"><CheckCircledIcon/>View Posts</li>
-                        <li className="flex gap-2 items-center text-green-500"><CheckCircledIcon/>Chat with DEVbot</li>
-                        <li className="flex gap-2 items-center text-red-500"><CrossCircledIcon/>Make Posts</li>
-                        <li className="flex gap-2 items-center text-red-500"><CrossCircledIcon/>Add Friends</li>
+                        <li className="flex gap-2 items-center text-zinc-700 font-medium"><CheckCircledIcon/>View Posts</li>
+                        <li className="flex gap-2 items-center text-zinc-700 font-medium"><CheckCircledIcon/>Chat with DEVbot</li>
+                        <li className="flex gap-2 items-center text-zinc-400 line-through"><CrossCircledIcon/>Create Posts</li>
+                        <li className="flex gap-2 items-center text-zinc-400 line-through"><CrossCircledIcon/>Make Comments</li>
                     </ul>
                     <button className="cursor-pointer mt-4 rounded bg-zinc-900 px-3 py-2 text-m text-white font-medium hover:opacity-90">Sign Up</button>
                 </Card>
@@ -36,10 +36,10 @@ function Plans() {
                     <p>Get the best benefits for a low cost</p>
                     <div className="h-[1px] bg-zinc-200 w-full"></div>
                     <ul className="flex flex-col gap-4">
-                        <li className="flex gap-2 items-center text-green-500"><CheckCircledIcon/>View Posts</li>
-                        <li className="flex gap-2 items-center text-green-500"><CheckCircledIcon/>Chat with DEVbot</li>
-                        <li className="flex gap-2 items-center text-green-500"><CheckCircledIcon/>Make Posts</li>
-                        <li className="flex gap-2 items-center text-green-500"><CheckCircledIcon/>Add Friends</li>
+                        <li className="flex gap-2 items-center text-zinc-700 font-medium"><CheckCircledIcon/>View Posts</li>
+                        <li className="flex gap-2 items-center text-zinc-700 font-medium"><CheckCircledIcon/>Chat with DEVbot</li>
+                        <li className="flex gap-2 items-center text-zinc-700 font-medium"><CheckCircledIcon/>Create Posts</li>
+                        <li className="flex gap-2 items-center text-zinc-700 font-medium"><CheckCircledIcon/>Make Comments</li>
                     </ul>
                     <button className="cursor-pointer mt-4 rounded bg-amber-300 px-3 py-2 text-m text-zinc-700 font-medium hover:bg-amber-200 hover:text-zinc-800">Subscribe</button>
                 </Card>

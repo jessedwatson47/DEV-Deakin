@@ -117,7 +117,7 @@ function Basic() {
           <Avatar.Fallback className="AvatarFallback" delayMs={600}>
             <PersonIcon className="w-20 h-20"/>
           </Avatar.Fallback>
-          {editingDisplayPicture ? <div className="mt-4"><FileUpload fileName={fileName} file={file} handleUpload={handleUpload} handleUploadChange={handleUploadChange} /></div> : <button onClick={handleDisplayPictureToggle} className="absolute right-0 top-0 text-zinc-500 hover:bg-zinc-200 cursor-pointer rounded"><Pencil2Icon/></button>}
+          {editingDisplayPicture ? <div className="mt-4"><FileUpload fileName={fileName} file={file} handleUpload={handleUpload} handleUploadChange={handleUploadChange} /></div> : <button onClick={handleDisplayPictureToggle} className="absolute right-0 top-0 text-zinc-500 bg-zinc-100 hover:bg-zinc-200 cursor-pointer rounded"><Pencil2Icon/></button>}
           
         </Avatar.Root>
         {/* Display Name */}
