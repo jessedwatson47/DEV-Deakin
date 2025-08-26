@@ -12,6 +12,7 @@ export default function Wall() {
   const [loading, setLoading] = useState(false);
   const [filterOption, setFilterOption] = useState("Filter by...");
   const [query, setQuery] = useState("");
+  const [noResults, setNoResults] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -43,6 +44,7 @@ export default function Wall() {
 
   const handleQuery = () => {
     if (!query) return;
+    setNoResults(false);
 
     const filter = filterOption.toLowerCase();
     const q = query.toLowerCase();
@@ -51,10 +53,19 @@ export default function Wall() {
     
     if (filter === "title") {
       filtered = allPosts.filter(p => p.title.toLowerCase().includes(q));
+      if (filtered.length === 0) {
+        setNoResults(true);
+      }
     } else if (filter === "tag") {
       filtered = allPosts.filter(p => p.tags.includes(q));
+      if (filtered.length === 0) {
+        setNoResults(true);
+      }
     } else if (filter === "date") {
       filtered = allPosts.filter(p => p.createdAt.toDate().toLocaleString().includes(q));
+      if (filtered.length === 0) {
+        setNoResults(true);
+      }
     } else {
       filtered = allPosts;
     }
@@ -69,19 +80,27 @@ export default function Wall() {
   if (err) return <p>Failed to load posts.</p>;
   if (loading) return <WallSkeleton />
 
+  console.log(allPosts);
+
   return (
     <section className="max-w-screen-xl mx-auto mt-4 mb-4 flex">
       {/* Main Wall */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 w-full">
         <h1 className="text-2xl font-semibold self-center">The Wall</h1>
         <SearchBar divClassName="self-center" inputClassName="bg-white ring-1 ring-zinc-300 p-1 w-[400px]" buttonClassName="right-0 top-0 bg-white ring-1 ring-zinc-300 hover:bg-zinc-200 cursor-pointer h-full p-1" dropDown="true" dropDown1="None" dropDown2="Title" dropDown3="Tag" dropDown4="Date" handleFilterOption={handleFilterOption} filterOption={filterOption} query={query} handleQuery={handleQuery} handleChange={handleChange} /> 
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 [column-fill:_balance]">
-          {posts.map(p => (
-            <div className="break-inside-avoid mb-6">
-            <PostCard key={p.id} imageUrl={p.imageUrl} postType={p.postType} question={p.question} abstract={p.abstract} article={p.article} imageAlt={p.imageAlt} title={p.title} desc={p.desc} tags={p.tags} author={p.authorName} authorPhoto={p.authorPhoto ?? null} width="w-full" height="h-fit" createdAt={p.createdAt.toDate().toLocaleString()}></PostCard>
+          {noResults
+            ?
+              <p className="text-zinc-400 self-center">No results found for "<span className="text-zinc-900">{query}</span>".</p>
+            :
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 [column-fill:_balance]">
+              {posts.map(p => (
+              <div className="break-inside-avoid mb-6">
+                <PostCard key={p.id} imageUrl={p.imageUrl} postType={p.postType} question={p.question} abstract={p.abstract} article={p.article} imageAlt={p.imageAlt} title={p.title} desc={p.desc} tags={p.tags} author={p.authorName} authorPhoto={p.authorPhoto ?? null} width="w-full" height="h-fit" createdAt={p.createdAt.toDate().toLocaleString()}></PostCard>
+              </div>
+              ))}
             </div>
-          ))}
-        </div>
+          }
+        
       </div>
     </section>
   );
