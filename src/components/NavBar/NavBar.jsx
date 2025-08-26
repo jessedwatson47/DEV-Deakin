@@ -12,6 +12,7 @@ import { Link, NavLink } from 'react-router-dom'
 import DeakinBadge from '../../assets/deakin-logo-badge.png'
 // Auth
 import { useAuth } from '../../AuthContext'
+import SearchBar from '../SearchBar/SearchBar';
 
 function NavBar() {
   const { user, userData, authLoading, userLoading, logout } = useAuth();
@@ -26,6 +27,10 @@ function NavBar() {
         {/* Main Links*/}
         <NavigationMenu.Root className="relative" aria-label="Main">
           <NavigationMenu.List className="flex gap-2 items-center">
+
+            <NavigationMenu.Item>
+              <SearchBar inputClassName="bg-white ring-1 ring-zinc-300 p-1" buttonClassName="right-0 top-0 bg-white ring-1 ring-zinc-300 hover:bg-zinc-200 cursor-pointer h-full p-1"/>
+            </NavigationMenu.Item>
 
             <NavigationMenu.Item>
               <NavigationMenu.Link asChild>
