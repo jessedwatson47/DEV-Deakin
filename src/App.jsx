@@ -25,6 +25,7 @@ import NotFound from './pages/NotFound/NotFound'
 import SignedInGuard from './SignedInGuard'
 
 import { Toast } from 'radix-ui'
+import Posts from './pages/Account/sections/Posts'
 
 
 
@@ -60,6 +61,7 @@ function App() {
             <Route index element={<Basic />}/>
             <Route path="connections" element={<Connections />}/>
             <Route path="security" element={<Security />}/>
+            <Route path="posts" element={<Posts />}/>
           </Route>
           
         </Route>

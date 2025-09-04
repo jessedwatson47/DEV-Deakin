@@ -10,6 +10,7 @@ export default function Account() {
           <NavLink end to="." className="text-base text-zinc-500 hover:text-teal-500">Basic</NavLink>
           <NavLink to="connections" className="text-base text-zinc-500 hover:text-teal-500">Connections</NavLink>
           <NavLink to="security" className="text-base text-zinc-500 hover:text-teal-500">Security</NavLink>
+          <NavLink to="posts" className="text-base text-zinc-500 hover:text-teal-500">Posts</NavLink>
         </nav>
       </div>
       <Outlet />
