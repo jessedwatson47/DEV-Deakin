@@ -29,7 +29,7 @@ function FeaturedPosts() {
         <div className="flex gap-8 w-full">
           {posts.map(p => (
               <div key={p.id} className="w-full h-90">
-                <PostCard imageUrl={p.imageUrl} imageSize='w-full max-h-30' postType={p.postType} question={p.question} abstract={p.abstract} article={p.article} imageAlt={p.imageAlt} title={p.title} desc={p.desc} tags={p.tags} author={p.authorName} authorPhoto={p.authorPhoto ?? null} width="w-full" height="h-fit" createdAt={p.createdAt.toDate().toLocaleString()} ></PostCard>
+                <PostCard id={p.id} uid={p.userId} imageUrl={p.imageUrl} imageClass="object-cover" imageSize='w-full max-h-30' postType={p.postType} question={p.question} abstract={p.abstract} article={p.article} imageAlt={p.imageAlt} title={p.title} desc={p.desc} tags={p.tags} author={p.authorName} authorPhoto={p.authorPhoto ?? null} width="w-full" height="h-fit" createdAt={p.createdAt.toDate().toLocaleString()} ></PostCard>
               </div>
               ))}
         </div>

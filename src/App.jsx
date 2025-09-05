@@ -26,6 +26,7 @@ import SignedInGuard from './SignedInGuard'
 
 import { Toast } from 'radix-ui'
 import Posts from './pages/Account/sections/Posts'
+import PostView from './components/PostView/PostView'
 
 
 
@@ -44,6 +45,7 @@ function App() {
           <Route path="wall" element={<Wall />}/>
           <Route path="contact" element={<Contact />}/>
           <Route path="plans" element={<Plans />}/>
+          <Route path="post/:uid/:id" element={<PostView />}/>
         </Route>
 
         {/* Auth Layout (No NavBar) */}
