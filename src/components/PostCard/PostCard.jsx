@@ -1,15 +1,45 @@
 import React from 'react'
 import Card from '../Card/Card'
-import { StarFilledIcon } from '@radix-ui/react-icons'
+import { StarFilledIcon, DotsVerticalIcon } from '@radix-ui/react-icons'
+import { DropdownMenu } from 'radix-ui'
+import { Link } from 'react-router-dom'
 
-function PostCard({postType, question, abstract, article, imageUrl, imageAlt, imageSize = "max-h-[60%]" , title, desc, tags, rating, author, authorPhoto, width, height, createdAt}) {
+
+
+function PostCard({postType, question, abstract, article, imageUrl, imageClass, imageAlt, imageSize = "max-h-[60%]" , title, desc, tags, rating, author, authorPhoto, width, height, createdAt, handleVisibility, menu}) {
   return (
-    <Card className={`${width} ${height} shadow `} padding="p-0">
+    <Card className={`${width} ${height} shadow`} padding="p-0">
         {/* Img */}
-        <img src={imageUrl} alt={imageAlt} className={`object-cover ${imageSize}`}/>
+        <img src={imageUrl} alt={imageAlt} className={`${imageClass} ${imageSize}`}/>
         {/* Text */}
         <div className="flex flex-col gap-2 p-4">
-            <h3 className="text-2xl text-zinc-900 text-wrap">{title}</h3>
+            <div className="flex justify-between">
+                <h3 className="text-2xl text-zinc-900 text-wrap">{title}</h3>
+                {/* Menu */}
+                {menu ?
+                <DropdownMenu.Root>
+                    <DropdownMenu.Trigger asChild>
+                        <button className="text-zinc-800" aria-label="Post Menu">
+                            <DotsVerticalIcon />
+                        </button>
+                    </DropdownMenu.Trigger>
+
+                        <DropdownMenu.Portal>
+                        <DropdownMenu.Content className="DropdownMenuContent flex flex-col gap-2 bg-gray-200 p-4 shadow-md rounded" sideOffset={5}>
+                            {/* Dropdown Menu Items */}
+                            
+                            <DropdownMenu.Item className="DropdownMenuItem font-semibold text-white bg-zinc-500 py-2 px-4 hover:bg-zinc-600 rounded">
+                            <button onClick={handleVisibility}>Hide Post</button>
+                            </DropdownMenu.Item>
+
+
+                    </DropdownMenu.Content>
+                    </DropdownMenu.Portal>
+                </DropdownMenu.Root>
+                : ""
+                }
+                
+            </div>
             <span className="text-xs text-zinc-400">{postType}</span>
             {abstract ? <p className="text-sm text-zinc-700 text-wrap">{abstract}</p> : <></>}
             <p className="text-sm text-zinc-500 text-wrap">{desc || question || article}</p>

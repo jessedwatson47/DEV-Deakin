@@ -17,7 +17,7 @@ function Posts() {
         (async () => {
           try {
             setLoading(true);
-            const all = await fetchAllPosts({ pageSize: 100 }, user.uid );
+            const all = await fetchAllPosts({ pageSize: 100, uid: user.uid } );
             setPosts(all);
             console.log(all);
           } catch (e) {
@@ -88,7 +88,7 @@ function Posts() {
               </tbody>
             </table>
         }
-        <button disabled={isDeleting || selectedPosts.length === 0} onClick={handleDelete} className="cursor-pointer bg-red-500 text-white py-2 px-4 hover:bg-red-400 rounded disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-red-500">Delete</button>
+        {posts.length > 0 ? <button disabled={isDeleting || selectedPosts.length === 0} onClick={handleDelete} className="cursor-pointer bg-red-500 text-white py-2 px-4 hover:bg-red-400 rounded disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-red-500">Delete</button> : undefined}
         </div>
     </article>
   )

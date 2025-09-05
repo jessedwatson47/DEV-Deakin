@@ -9,7 +9,7 @@ function Footer() {
       <div className="flex max-w-screen-xl gap-20 justify-center mx-auto">
         {/* Explore */}
         <div className="flex flex-col gap-1">
-          <h4 className="text-lg mb-2">Explore</h4>
+          <h4 className="text-lg mb-2 font-semibold">Explore</h4>
           <NavLink to="/" className="text-sm hover:underline hover:underline-offset-3">Home</NavLink>
           <NavLink to="/wall" className="text-sm hover:underline hover:underline-offset-3">Questions</NavLink>
           <NavLink to="/wall" className="text-sm hover:underline hover:underline-offset-3">Articles</NavLink>
@@ -17,14 +17,14 @@ function Footer() {
         </div>
         {/* Support */}
         <div className="flex flex-col gap-1">
-          <h4 className="text-lg mb-2">Support</h4>
+          <h4 className="text-lg mb-2 font-semibold">Support</h4>
           <NavLink to="/faq" className="text-sm hover:underline hover:underline-offset-3">FAQ</NavLink>
           <NavLink to="/" className="text-sm hover:underline hover:underline-offset-3">Help</NavLink>
           <NavLink to="/contact" className="text-sm hover:underline hover:underline-offset-3">Contact Us</NavLink>
         </div>
         {/* Stay Connected */}
         <div className="flex flex-col gap-1 items-center">
-          <h4 className="text-lg mb-2">Stay Connected</h4>
+          <h4 className="text-lg mb-2 font-semibold">Stay Connected</h4>
           {/* Social Links */}
           <div className="flex gap-2">
           {/* Facebook */}

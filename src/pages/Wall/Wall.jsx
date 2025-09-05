@@ -4,6 +4,7 @@ import PostCard from "../../components/PostCard/PostCard";
 import Spinner from "../../components/Spinner/Spinner";
 import WallSkeleton from "../../components/Skeleton/WallSkeleton";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import { Link } from "react-router-dom";
 
 export default function Wall() {
   const [allPosts, setAllPosts] = useState([]);
@@ -77,6 +78,10 @@ export default function Wall() {
     setQuery(q);
   }
 
+  const handleVisibility = (postId) => {
+    setPosts(prev => prev.filter(post => post.id !== postId));
+  }
+
   if (err) return <p>Failed to load posts.</p>;
   if (loading) return <WallSkeleton />
 
@@ -87,15 +92,18 @@ export default function Wall() {
       {/* Main Wall */}
       <div className="flex flex-col gap-4 w-full">
         <h1 className="text-2xl font-semibold self-center">The Wall</h1>
-        <SearchBar divClassName="self-center" inputClassName="bg-white ring-1 ring-zinc-300 p-1 w-[400px]" buttonClassName="right-0 top-0 bg-white ring-1 ring-zinc-300 hover:bg-zinc-200 cursor-pointer h-full p-1" dropDown="true" dropDown1="None" dropDown2="Title" dropDown3="Tag" dropDown4="Date" handleFilterOption={handleFilterOption} filterOption={filterOption} query={query} handleQuery={handleQuery} handleChange={handleChange} /> 
+        <div className="flex mx-auto gap-8">
+          <SearchBar divClassName="self-center" inputClassName="bg-white ring-1 ring-zinc-300 p-1 w-[400px]" buttonClassName="right-0 top-0 bg-white ring-1 ring-zinc-300 hover:bg-zinc-200 cursor-pointer h-10 p-1" dropDown="true" dropDown1="None" dropDown2="Title" dropDown3="Tag" dropDown4="Date" handleFilterOption={handleFilterOption} filterOption={filterOption} query={query} handleQuery={handleQuery} handleChange={handleChange} /> 
+          <Link to="/post" className="font-semibold text-white bg-teal-500 py-2 px-4 hover:bg-teal-600 rounded">Create a Post</Link>
+        </div>
           {noResults
             ?
               <p className="text-zinc-400 self-center">No results found for "<span className="text-zinc-900">{query}</span>".</p>
             :
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 [column-fill:_balance]">
               {posts.map(p => (
-              <div className="break-inside-avoid mb-6">
-                <PostCard key={p.id} imageUrl={p.imageUrl} postType={p.postType} question={p.question} abstract={p.abstract} article={p.article} imageAlt={p.imageAlt} title={p.title} desc={p.desc} tags={p.tags} author={p.authorName} authorPhoto={p.authorPhoto ?? null} width="w-full" height="h-fit" createdAt={p.createdAt.toDate().toLocaleString()}></PostCard>
+              <div key={p.id} className="break-inside-avoid mb-6">
+                <PostCard imageUrl={p.imageUrl} imageClass="object-cover" postType={p.postType} question={p.question} abstract={p.abstract} article={p.article} imageAlt={p.imageAlt} title={p.title} desc={p.desc} tags={p.tags} author={p.authorName} authorPhoto={p.authorPhoto ?? null} width="w-full" height="h-fit" createdAt={p.createdAt.toDate().toLocaleString()} handleVisibility={() => handleVisibility(p.id)} menu="true"></PostCard>
               </div>
               ))}
             </div>
