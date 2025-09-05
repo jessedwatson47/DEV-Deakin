@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import FileUpload from '../FileUpload/FileUpload';
 import { useAuth } from '../../AuthContext';
-import { createPost, uploadImage } from '../../utils/firebase';
+import { createPost, uploadImage, uploadVideo } from '../../utils/firebase';
 import { Toast } from 'radix-ui';
 
 
@@ -12,6 +12,8 @@ function NewPost() {
     const [fileName, setFileName] = useState("No file chosen");
     const [file, setFile] = useState();
     const [imageUrl, setImageUrl] = useState("");
+    const [videoUrl, setVideoUrl] = useState("");
+    const [isUploading, setIsUploading] = useState(false);
 
     const [post, setPost] = useState({
         postType: "question",
@@ -21,6 +23,7 @@ function NewPost() {
         abstract: "",
         article: "",
         imageUrl: "",
+        videoUrl: "",
     });
 
 
@@ -38,11 +41,37 @@ function NewPost() {
 
     const handleUpload = async () => {
         if (!file) return;
-        const url = await uploadImage(file);
-        setImageUrl(url);
-        setPost( (prev) => {
-            return {...prev, imageUrl: url}
-        })
+        setIsUploading(true);
+        let url;
+        if (file.type.startsWith("video"))
+        {
+            try {
+                url = await uploadVideo(file);
+                setVideoUrl(url);
+                console.log("video uploaded");
+                setPost( (prev) => {
+                return {...prev, videoUrl: url}});
+            } catch (err) {
+                console.log(err);
+                setIsUploading(false);
+            }
+        }
+
+        if (file.type.startsWith("image"))
+        {
+            try {
+                url = await uploadImage(file);
+                setImageUrl(url);
+                console.log("image uploaded");
+                setPost( (prev) => {
+                return {...prev, imageUrl: url}});
+                
+            } catch (err) {
+                console.log(err);
+                setIsUploading(false);
+            }
+        }
+        
     }
 
 
@@ -112,6 +141,10 @@ function NewPost() {
                     <input type="radio" name="postType" id="article" value="article" checked={post.postType === "article"} onChange={handleChange}></input>
                     <label htmlFor="article">Article</label>
                 </div>
+                <div className="flex gap-1">
+                    <input type="radio" name="postType" id="tutorial" value="tutorial" checked={post.postType === "tutorial"} onChange={handleChange}></input>
+                    <label htmlFor="article">Tutorial</label>
+                </div>
             </div>
 
         {/* Conditional Rendering */}
@@ -120,7 +153,7 @@ function NewPost() {
         <>  
             <h3 className="text-lg font-semibold">What do you want to ask?</h3>
             <div className="flex flex-col gap-1">
-                <FileUpload file={file} fileName={fileName} handleUpload={handleUpload} handleUploadChange={handleUploadChange} uploadImage={uploadImage} imageUrl={imageUrl}/>
+                <FileUpload file={file} fileName={fileName} handleUpload={handleUpload} handleUploadChange={handleUploadChange} imageUrl={imageUrl}/>
                 <label htmlFor="question-title">Title</label>
                 <input className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="title" onChange={handleChange} id="question-title" placeholder="Start your question with how, what, why, etc."/>
                 <label htmlFor="question-content">Question</label>
@@ -141,7 +174,7 @@ function NewPost() {
             <>  
             <h3 className="text-lg font-semibold">What do you want to share?</h3>
             <div className="flex flex-col gap-1">
-                <FileUpload file={file} fileName={fileName} handleUpload={handleUpload} handleUploadChange={handleUploadChange} uploadImage={uploadImage} imageUrl={imageUrl}/>
+                <FileUpload file={file} fileName={fileName} handleUpload={handleUpload} handleUploadChange={handleUploadChange} imageUrl={imageUrl}/>
                 <label htmlFor="article-title">Title</label>
                 <input className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="title" onChange={handleChange} id="article-title" placeholder="Enter a descriptive title"/>
                 <label htmlFor="article-abstract">Abstract</label>
@@ -150,6 +183,27 @@ function NewPost() {
                 <textarea className="mb-4 resize-none bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full h-40" name="article" onChange={handleChange} id="article-content" placeholder="Write your article here"/>
                 <label htmlFor="article-tags">Tags</label>
                 <input className="mb-2 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full submit-none" type="text" name="tags" onKeyDown={handleKeyDown} id="article-tags" placeholder="Press Enter to add a tag"/>
+                <div className="flex gap-2">
+                    {post.tags.map(tag => (
+                    <div className="bg-transparent text-zinc-900 ring-1 ring-zinc-400 text-xs font-semibold w-fit py-1 px-3 rounded-full tracking-wide">
+                        {tag}
+                    </div>
+                ))}
+                </div>
+            </div>
+        </>
+        )}
+        {post.postType === "tutorial" && (
+        <>  
+            <h3 className="text-lg font-semibold">What is the tutorial about?</h3>
+            <div className="flex flex-col gap-1">
+                <FileUpload accept="video/*" file={file} fileName={fileName} handleUpload={handleUpload} handleUploadChange={handleUploadChange} imageUrl={imageUrl}/>
+                <label htmlFor="question-title">Title</label>
+                <input className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="title" onChange={handleChange} id="question-title" placeholder="Choose a relevant title"/>
+                <label htmlFor="question-content">Description</label>
+                <textarea className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-40 w-full resize-none" name="question" id="question-content" onChange={handleChange} placeholder="Add extra information"/>
+                <label htmlFor="question-tags">Tags</label>
+                <input className="mb-2 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="tags" id="question-tags" onKeyDown={handleKeyDown} placeholder="Press Enter to add a tag"/>
                 <div className="flex gap-2">
                     {post.tags.map(tag => (
                     <div className="bg-transparent text-zinc-900 ring-1 ring-zinc-400 text-xs font-semibold w-fit py-1 px-3 rounded-full tracking-wide">

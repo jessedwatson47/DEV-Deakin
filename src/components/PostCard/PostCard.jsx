@@ -6,12 +6,13 @@ import { Link } from 'react-router-dom'
 
 
 
-function PostCard({ id, uid, postType, question, abstract, article, imageUrl, imageClass, imageAlt, imageSize = "max-h-[60%]" , title, desc, tags, rating, author, authorPhoto, width, height, createdAt, handleVisibility, menu}) {
+function PostCard({ id, uid, postType, question, abstract, article, imageUrl, videoUrl, imageClass, imageAlt, imageSize = "max-h-[60%]" , title, desc, tags, rating, author, authorPhoto, width, height, createdAt, handleVisibility, menu}) {
   return (
     <Link to={`/post/${uid}/${id}`}>
         <Card className={`${width} ${height} shadow`} padding="p-0">
             {/* Img */}
-            <img src={imageUrl} alt={imageAlt} className={`${imageClass} ${imageSize}`}/>
+            {imageUrl && <img src={imageUrl} alt={imageAlt} className={`${imageClass} ${imageSize}`}/>}
+            {videoUrl && <video src={videoUrl}></video>}
             {/* Text */}
             <div className="flex flex-col gap-2 p-4">
                 <div className="flex justify-between">
