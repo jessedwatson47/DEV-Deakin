@@ -1,12 +1,12 @@
 import React from 'react'
 import Card from '../Card/Card'
-import { StarFilledIcon, DotsVerticalIcon } from '@radix-ui/react-icons'
+import { StarFilledIcon, DotsVerticalIcon, HeartIcon, HeartFilledIcon } from '@radix-ui/react-icons'
 import { DropdownMenu } from 'radix-ui'
 import { Link } from 'react-router-dom'
 
 
 
-function PostCard({ id, uid, postType, question, abstract, article, imageUrl, videoUrl, imageClass, imageAlt, imageSize = "max-h-[60%]" , title, desc, tags, rating, author, authorPhoto, width, height, createdAt, handleVisibility, menu}) {
+function PostCard({ id, uid, postType, question, abstract, article, imageUrl, videoUrl, imageClass, imageAlt, imageSize = "max-h-[60%]" , title, desc, tags, rating, author, authorPhoto, width, height, createdAt, handleVisibility, menu, likes, isLiked, handleLike}) {
   return (
     <Link to={`/post/${uid}/${id}`}>
         <Card className={`${width} ${height} shadow`} padding="p-0">
@@ -45,10 +45,29 @@ function PostCard({ id, uid, postType, question, abstract, article, imageUrl, vi
                 <span className="text-xs text-zinc-400">{postType}</span>
                 {abstract ? <p className="text-sm text-zinc-700 text-wrap">{abstract}</p> : <></>}
                 <p className="text-sm text-zinc-500 text-wrap">{desc || question || article}</p>
-                <div className="flex gap-2">
-                    {tags.map(tag => (
-                    <div className="bg-zinc-100 text-zinc-900 ring-1 ring-zinc-400 text-xs font-semibold w-fit py-1 px-3 rounded-full tracking-wide">{tag}</div>
-                ))}
+                <div className="flex justify-between">
+                    <div className="flex gap-2">
+                        {tags.map(tag => (
+                        <div className="bg-zinc-100 text-zinc-900 ring-1 ring-zinc-400 text-xs font-semibold w-fit py-1 px-3 rounded-full tracking-wide">{tag}</div>
+                    ))}
+                    </div>
+                    <div className="flex gap-1 items-center">
+                        {!isLiked ? 
+                            <>
+                                <button onClick={handleLike} className="cursor-pointer hover:bg-red-200 rounded p-1">
+                                    <HeartIcon /> 
+                                </button>
+                                <span className="text-sm font-semibold text-zinc-500">{likes || 0}</span>
+                            </>
+                        :
+                            <>
+                                <button onClick={handleLike} className="cursor-pointer hover:bg-red-200 rounded p-1">
+                                    <HeartFilledIcon />
+                                </button>
+                                <span className="text-sm font-semibold text-zinc-500">{likes}</span>
+                            </>
+                        }
+                    </div>
                 </div>
                 <div className="flex justify-between">
                     {rating ? <div className="flex gap-1 items-center"><StarFilledIcon className="text-yellow-500"/>{rating}</div> : ""}

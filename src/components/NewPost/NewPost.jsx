@@ -24,6 +24,7 @@ function NewPost() {
         article: "",
         imageUrl: "",
         videoUrl: "",
+        likes: 0,
     });
 
 

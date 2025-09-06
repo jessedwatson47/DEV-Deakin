@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchAllPosts } from "../../utils/firebase";
+import { doLike, fetchAllPosts } from "../../utils/firebase";
 import PostCard from "../../components/PostCard/PostCard";
 import Spinner from "../../components/Spinner/Spinner";
 import WallSkeleton from "../../components/Skeleton/WallSkeleton";
@@ -14,6 +14,7 @@ export default function Wall() {
   const [filterOption, setFilterOption] = useState("Filter by...");
   const [query, setQuery] = useState("");
   const [noResults, setNoResults] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -82,6 +83,20 @@ export default function Wall() {
     setPosts(prev => prev.filter(post => post.id !== postId));
   }
 
+  const handleLike = async (postId, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(postId)
+
+    try{
+      await doLike(postId)
+      setIsLiked(true);
+    } catch (err) {
+      console.log(err);
+    }
+  
+  }
+
   if (err) return <p>Failed to load posts.</p>;
   if (loading) return <WallSkeleton />
 
@@ -103,7 +118,7 @@ export default function Wall() {
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 [column-fill:_balance]">
               {posts.map(p => (
               <div key={p.id} className="break-inside-avoid mb-6">
-                <PostCard id={p.id} uid={p.userId} imageUrl={p.imageUrl} imageClass="object-cover" postType={p.postType} question={p.question} abstract={p.abstract} article={p.article} imageAlt={p.imageAlt} title={p.title} desc={p.desc} tags={p.tags} author={p.authorName} authorPhoto={p.authorPhoto ?? null} width="w-full" height="h-fit" createdAt={p.createdAt.toDate().toLocaleString()} handleVisibility={() => handleVisibility(p.id)} menu="true"></PostCard>
+                <PostCard id={p.id} uid={p.userId} imageUrl={p.imageUrl} videoUrl={p.videoUrl} imageClass="object-cover" postType={p.postType} question={p.question} abstract={p.abstract} article={p.article} imageAlt={p.imageAlt} title={p.title} desc={p.desc} tags={p.tags} author={p.authorName} authorPhoto={p.authorPhoto ?? null} width="w-full" height="h-fit" createdAt={p.createdAt.toDate().toLocaleString()} handleVisibility={() => handleVisibility(p.id)} menu="true" likes={p.likes} handleLike={(e) => handleLike(p.id, e)} isLiked={isLiked}></PostCard>
               </div>
               ))}
             </div>
