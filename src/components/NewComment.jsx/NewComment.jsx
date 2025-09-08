@@ -30,6 +30,7 @@ function NewComment() {
     setIsSubmitting(true);
     try {
       await createComment(comment);
+      setComment(prev => ({ ...prev, text: '' }));
       setToast({title: "Success!", description: "You commented.", ok: true})
     } catch (err) {
       console.log(err);

@@ -111,6 +111,7 @@ function NewPost() {
 
         try {
             createPost(post);
+            setPost(prev => ({ ...prev, title: "", question: "", tags: "", article: "", abstract: "", imageUrl: "", videoUrl: ""}));
             setToast({title: "Success!", description: "Post created, go check what people have to say about it.", ok: true})
         } catch (err) {
             console.error(err);
