@@ -6,10 +6,10 @@ const AuthCtx = createContext(null);
 export const useAuth = () => useContext(AuthCtx);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); // Auth Data
   const [authLoading, setAuthLoading] = useState(true);
   const [userLoading, setUserLoading] = useState(true);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(null); // Firestore Data
 
   
   useEffect(() => {
@@ -66,7 +66,8 @@ export function AuthProvider({ children }) {
     return auth.currentUser;
   }
 
-    console.log(user);
+    console.log("user", user);
+    console.log("userdata", userData);
   return (
     <AuthCtx.Provider value={{ user, authLoading, userLoading, logout, userData, refreshUser }}>
       {children}

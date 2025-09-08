@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { fetchAllPosts } from '../../utils/firebase';
 import Spinner from '../Spinner/Spinner';
 import Comments from '../Comments/Comments';
+import NewComment from '../NewComment.jsx/NewComment';
 
 function PostView() {
     const { id, uid } = useParams();  
@@ -57,6 +58,7 @@ function PostView() {
                     <p className="text-base">{post?.desc || post?.article || post?.question}</p>
                 </div>
                 {/* Comment */}
+                <NewComment />
                 <Comments />
             </div>
             
