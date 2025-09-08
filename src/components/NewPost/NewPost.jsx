@@ -197,8 +197,9 @@ function NewPost() {
                 <input className="mb-2 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full submit-none" type="text" name="tags" onKeyDown={handleKeyDown} id="article-tags" placeholder="Press Enter to add a tag"/>
                 <div className="flex gap-2">
                     {post.tags.map(tag => (
-                    <div className="bg-transparent text-zinc-900 ring-1 ring-zinc-400 text-xs font-semibold w-fit py-1 px-3 rounded-full tracking-wide">
-                        {tag}
+                    <div className="flex gap-1 bg-transparent text-zinc-900 ring-1 ring-zinc-400 text-xs font-semibold w-fit py-1 px-3 rounded-full tracking-wide">
+                        <p>{tag}</p>
+                        <button className="cursor-pointer rounded hover:bg-zinc-300 p-1" onClick={(e) => handleTag(e, tag)}><Cross2Icon className="h-3 w-3 text-zinc-500"/></button>
                     </div>
                 ))}
                 </div>
@@ -218,8 +219,9 @@ function NewPost() {
                 <input className="mb-2 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="tags" id="question-tags" onKeyDown={handleKeyDown} placeholder="Press Enter to add a tag"/>
                 <div className="flex gap-2">
                     {post.tags.map(tag => (
-                    <div className="bg-transparent text-zinc-900 ring-1 ring-zinc-400 text-xs font-semibold w-fit py-1 px-3 rounded-full tracking-wide">
-                        {tag}
+                    <div className="flex gap-1 bg-transparent text-zinc-900 ring-1 ring-zinc-400 text-xs font-semibold w-fit py-1 px-3 rounded-full tracking-wide">
+                        <p>{tag}</p>
+                        <button className="cursor-pointer rounded hover:bg-zinc-300 p-1" onClick={(e) => handleTag(e, tag)}><Cross2Icon className="h-3 w-3 text-zinc-500"/></button>
                     </div>
                 ))}
                 </div>
