@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useAuth } from '../../../AuthContext';
+import { useAuth } from '../../../context/AuthContext';
 import { Avatar, Toast } from 'radix-ui';
 import { PersonIcon, CheckCircledIcon, CrossCircledIcon, Pencil2Icon, CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
 import Spinner from '../../../components/Spinner/Spinner';

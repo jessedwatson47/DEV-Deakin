@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useAuth } from '../../AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { useParams } from 'react-router-dom';
 import { createComment } from '../../utils/firebase';
 import { Toast } from 'radix-ui';
@@ -69,13 +69,21 @@ function NewComment() {
         )}
         <Toast.Close className="absolute right-2 top-2">×</Toast.Close>
       </Toast.Root>
+      {/* Form */}
+      { user?.isAnonymous === false ?
     <form onSubmit={handleSubmit} className="">
         <div className="flex gap-2 items-center">
             <img src={user?.photoURL} alt="user photo" className="w-6 h-6 rounded-full object-cover"/>
             <textarea className="bg-white ring-1 ring-zinc-200 rounded py-1 px-2 flex-1 resize-none"name="text" id="text" value={comment.text} onChange={handleChange} placeholder="Write a comment"></textarea>
-            <button disabled={isSubmitting} className="rounded bg-zinc-900 px-3 py-2 text-m text-white font-medium hover:opacity-90 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-zinc-900">Post</button>
+            <button disabled={isSubmitting} className="h-full rounded bg-zinc-900 px-3 py-2 text-m text-white font-medium hover:opacity-90 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-zinc-900">Post</button>
         </div>
     </form>
+    :
+      <div className="flex gap-2 items-center">
+        <textarea disabled={user?.isAnonymous} className="bg-white ring-1 ring-zinc-200 rounded py-1 px-2 flex-1 resize-none"name="text" id="text" value={comment.text} onChange={handleChange} placeholder="Please sign in to comment"></textarea>
+        <button disabled={user?.isAnonymous} className="h-full rounded bg-zinc-900 px-3 py-2 text-m text-white font-medium hover:opacity-90 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-zinc-900">Post</button>
+      </div>
+    }
     </>
   )
 }

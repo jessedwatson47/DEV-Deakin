@@ -11,7 +11,7 @@ import { Link, NavLink } from 'react-router-dom'
 // Deakin Logos
 import DeakinBadge from '../../assets/deakin-logo-badge.png'
 // Auth
-import { useAuth } from '../../AuthContext'
+import { useAuth } from '../../context/AuthContext'
 import SearchBar from '../SearchBar/SearchBar';
 
 function NavBar() {

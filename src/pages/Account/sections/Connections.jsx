@@ -1,6 +1,6 @@
 import React, { useEffect }from 'react'
 import { linkGoogle } from '../../../utils/firebase'
-import { useAuth } from '../../../AuthContext';
+import { useAuth } from '../../../context/AuthContext';
 
 
 

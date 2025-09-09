@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { deleteComment, subscribeToComments, subscribeToPost, updateSolution } from '../../utils/firebase';
 import { useParams } from 'react-router-dom';
-import { useAuth } from '../../AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import Comment from './Comment';
 
 function Comments() {

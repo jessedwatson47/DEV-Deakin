@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { sendVerification, continueWithEmailPassword, createUser } from "../../utils/firebase";
 import { Form } from 'radix-ui';
-import { useAuth } from '../../AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 
 function Signup() {

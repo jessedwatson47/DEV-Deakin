@@ -6,6 +6,8 @@ import Comments from '../Comments/Comments';
 import NewComment from '../NewComment.jsx/NewComment';
 import Like from '../Like/Like';
 import { doLike } from '../../utils/firebase';
+import 'plyr/dist/plyr.css';
+import Plyr from 'plyr';
 
 function PostView() {
     const { id, uid } = useParams();  
@@ -29,6 +31,12 @@ function PostView() {
         })();
     }, []);
 
+    // Plyr
+    useEffect(() => {
+        if (!post?.videoUrl) return;
+        const player = new Plyr('#player');
+    },[post?.videoUrl]);
+
      const handleLike = async (e, authorId, postId) => {
         e.preventDefault();
         e.stopPropagation();
@@ -43,7 +51,7 @@ function PostView() {
       
       }
 
-    if (loading) return <Spinner/>
+    if (loading) return <div className="w-fit mx-auto"><Spinner/></div>
 
   return (
     <section className="max-w-screen-xl mx-auto mt-4 mb-4 flex">
@@ -57,7 +65,7 @@ function PostView() {
 
             {post?.videoUrl &&
                 <div className="h-full w-[70%] justify-center items-center">
-                    <video controls className="h-full w-full">
+                    <video id="player" controls className="h-full w-full">
                         <source src={post?.videoUrl}/>
                     </video>
                 </div>

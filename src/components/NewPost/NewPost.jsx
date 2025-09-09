@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import FileUpload from '../FileUpload/FileUpload';
-import { useAuth } from '../../AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { createPost, uploadImage, uploadVideo } from '../../utils/firebase';
 import { Toast } from 'radix-ui';
 import { Cross2Icon } from '@radix-ui/react-icons';

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { fetchAllPosts } from '../../../utils/firebase';
-import { useAuth } from '../../../AuthContext';
+import { useAuth } from '../../../context/AuthContext';
 import Spinner from '../../../components/Spinner/Spinner';
 import { deletePosts } from '../../../utils/firebase';
 

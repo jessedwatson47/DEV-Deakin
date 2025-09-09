@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, reload } from "firebase/auth";
-import { auth, authReady, logout, anonAuth, fetchUser } from "./utils/firebase.js";
+import { auth, authReady, logout, anonAuth, fetchUser } from "../utils/firebase.js";
 
-const AuthCtx = createContext(null);
-export const useAuth = () => useContext(AuthCtx);
+const AuthContext = createContext(null);
+export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null); // Auth Data
@@ -69,8 +69,8 @@ export function AuthProvider({ children }) {
     console.log("user", user);
     console.log("userdata", userData);
   return (
-    <AuthCtx.Provider value={{ user, authLoading, userLoading, logout, userData, refreshUser }}>
+    <AuthContext.Provider value={{ user, authLoading, userLoading, logout, userData, refreshUser }}>
       {children}
-    </AuthCtx.Provider>
+    </AuthContext.Provider>
   );
 }

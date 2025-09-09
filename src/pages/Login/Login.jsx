@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { sendPasswordReset } from '../../utils/firebase';
 import { Form } from 'radix-ui';
 import AlertModal from '../../components/AlertModal/AlertModal';
@@ -47,7 +47,7 @@ function Login() {
         setSubmitting(true);
         try {
           await continueWithEmailPassword(contact.email, contact.password);
-          if (!loading && user && !user.isAnonymous) navigate("/", {replace:true});
+          navigate("/", {replace:true});
           setError("");
         } catch (err) {
           console.log(err.message);
@@ -64,8 +64,7 @@ function Login() {
         setSubmitting(true);
         try {
           await continueWithGoogle();
-          console.log(user);
-          if (!loading && user && !user.isAnonymous) navigate("/", {replace:true});
+          navigate("/", {replace:true});
           setError("");
         } catch (err) {
           console.log(err.message);
@@ -89,7 +88,7 @@ function Login() {
     const onLogout = async() => {
       try {
         await logout();
-        if (!loading && user && user.isAnonymous) navigate("/login", {replace:true});
+        navigate("/login", {replace:true});
         setError("");
       } catch (err) {
         console.error(err);
