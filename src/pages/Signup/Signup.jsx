@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import { continueWithEmailPassword, sendVerification } from "../../utils/firebase";
+import { sendVerification, continueWithEmailPassword, createUser } from "../../utils/firebase";
 import { Form } from 'radix-ui';
 import { useAuth } from '../../AuthContext';
 
@@ -45,7 +45,7 @@ function Signup() {
     try { // Create User
       setSubmitting(true);
       const { user } = await continueWithEmailPassword(contact.email, p1);
-      await createUserDocFromAuth(user, { email: contact.email });
+      await createUser(user, { email: contact.email });
       try { // Send Email Verification
           await sendVerification(user);
         } catch (err) {
