@@ -9,12 +9,12 @@ import Like from '../Like/Like'
 function PostCard({ id, uid, postType, question, abstract, article, imageUrl, videoUrl, imageClass, imageAlt, imageSize = "max-h-[60%]" , title, desc, tags, rating, author, authorPhoto, width, height, createdAt, handleVisibility, menu, likes, comments, isLiked, handleLike, solution}) {
   return (
     <Link to={`/post/${uid}/${id}`}>
-        <Card className={`${width} ${height} shadow overflow-hidden`} padding="p-0">
-            {/* Img */}
+        <Card className={`${width} ${height} shadow overflow-hidden h-full flex flex-col`} padding="p-0">
+            {/* Media */}
             {imageUrl && <img src={imageUrl} alt={imageAlt} className={`${imageClass} ${imageSize}`}/>}
             {videoUrl && <video src={videoUrl}></video>}
             {/* Text */}
-            <div className="flex flex-col gap-2 p-4">
+            <div className="flex flex-col gap-2 p-4 h-full">
                 <div className="flex justify-between">
                     <h3 className="text-2xl text-zinc-900 text-wrap">{title}</h3>
                     {/* Menu */}
@@ -45,26 +45,28 @@ function PostCard({ id, uid, postType, question, abstract, article, imageUrl, vi
                 <span className="text-xs text-zinc-400">{postType}</span>
                 {abstract ? <p className="text-sm text-zinc-700 text-wrap">{abstract}</p> : <></>}
                 <p className="text-sm text-zinc-500 text-wrap">{desc || question || article}</p>
-                <div className="flex justify-between">
-                    <div className="flex gap-2">
-                        {tags?.map(tag => (
-                        <div className="bg-zinc-100 text-zinc-900 ring-1 ring-zinc-400 text-xs font-semibold w-fit py-1 px-3 rounded-full tracking-wide">{tag}</div>
-                    ))}
-                    </div>
-                    <div className="flex gap-1 items-center">
-                        <Like likes={likes} isLiked={isLiked} handleLike={handleLike} />
-                        <div className="flex gap-1 ml-2">
-                          <ChatBubbleIcon />
-                          <span className="text-sm font-semibold text-zinc-500">{comments || 0}</span>
+                <div className="flex flex-col gap-2 mt-auto">
+                    <div className="flex justify-between">
+                        <div className="flex gap-2">
+                            {tags?.map(tag => (
+                            <div className="bg-zinc-100 text-zinc-900 ring-1 ring-zinc-400 text-xs font-semibold w-fit py-1 px-3 rounded-full tracking-wide">{tag}</div>
+                        ))}
+                        </div>
+                        <div className="flex gap-1 items-center">
+                            <Like likes={likes} isLiked={isLiked} handleLike={handleLike} />
+                            <div className="flex gap-1 ml-2">
+                            <ChatBubbleIcon />
+                            <span className="text-sm font-semibold text-zinc-500">{comments || 0}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="flex justify-between">
-                    {rating ? <div className="flex gap-1 items-center"><StarFilledIcon className="text-yellow-500"/>{rating}</div> : ""}
-                    <span className="text-zinc-300 text-xs">{createdAt}</span>
-                    <div className="flex gap-2">
-                        <img className="w-4 h-4 rounded-full" src={authorPhoto}></img>
-                        <span className="text-zinc-500 text-xs">{author}</span>
+                    <div className="flex justify-between">
+                        {rating ? <div className="flex gap-1 items-center"><StarFilledIcon className="text-yellow-500"/>{rating}</div> : ""}
+                        <span className="text-zinc-300 text-xs">{createdAt}</span>
+                        <div className="flex gap-2">
+                            <img className="w-4 h-4 rounded-full" src={authorPhoto}></img>
+                            <span className="text-zinc-500 text-xs">{author}</span>
+                        </div>
                     </div>
                 </div>
             </div>
