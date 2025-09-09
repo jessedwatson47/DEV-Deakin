@@ -1,8 +1,20 @@
 import React from 'react'
 import Card from '../../components/Card/Card'
 import { CheckCircledIcon, CrossCircledIcon } from '@radix-ui/react-icons'
+import { callCreateCheckoutSession, stripePromise } from '../../utils/firebase'
 
 function Plans() {
+    const startCheckout = async () => {
+        try {
+            const { data } = await callCreateCheckoutSession();
+            const stripe = await stripePromise;
+            await stripe.redirectToCheckout({ sessionId: data.id })
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
   return (
     <section className="flex flex-col max-w-screen-xl min-h-[100dvh] w-fit mx-auto gap-4 mt-8">
         <h1 className="text-2xl">Plans</h1>
@@ -41,7 +53,7 @@ function Plans() {
                         <li className="flex gap-2 items-center text-zinc-700 font-medium"><CheckCircledIcon/>Create Posts</li>
                         <li className="flex gap-2 items-center text-zinc-700 font-medium"><CheckCircledIcon/>Make Comments</li>
                     </ul>
-                    <button className="cursor-pointer mt-4 rounded bg-amber-300 px-3 py-2 text-m text-zinc-700 font-medium hover:bg-amber-200 hover:text-zinc-800">Subscribe</button>
+                    <button onClick={startCheckout} className="cursor-pointer mt-4 rounded bg-amber-300 px-3 py-2 text-m text-zinc-700 font-medium hover:bg-amber-200 hover:text-zinc-800">Subscribe</button>
                 </Card>
             </article>
         </div>

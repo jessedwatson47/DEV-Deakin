@@ -83,13 +83,14 @@ export default function Wall() {
     setPosts(prev => prev.filter(post => post.id !== postId));
   }
 
-  const handleLike = async (authorId, postId, e) => {
+  const handleLike = async (e, authorId, postId) => {
     e.preventDefault();
     e.stopPropagation();
     console.log(postId)
 
     try{
       await doLike(authorId, postId)
+      setPosts(prev => prev.map(p => p.id === postId ? { ...p, likeCount: (p.likeCount ?? 0) + 1 } : p));
     } catch (err) {
       console.log(err);
     }
@@ -117,7 +118,7 @@ export default function Wall() {
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 [column-fill:_balance]">
               {posts.map(p => (
               <div key={p.id} className="break-inside-avoid mb-6">
-                <PostCard id={p.id} uid={p.userId} imageUrl={p.imageUrl} videoUrl={p.videoUrl} imageClass="object-cover" postType={p.postType} question={p.question} abstract={p.abstract} article={p.article} imageAlt={p.imageAlt} title={p.title} desc={p.desc} tags={p.tags} author={p.authorName} authorPhoto={p.authorPhoto ?? null} width="w-full" height="h-fit" createdAt={p.createdAt.toDate().toLocaleString()} handleVisibility={() => handleVisibility(p.id)} menu="true" likes={p.likes} handleLike={(e) => handleLike(p.authorId, p.id, e)} isLiked={isLiked}></PostCard>
+                <PostCard id={p.id} uid={p.userId} imageUrl={p.imageUrl} videoUrl={p.videoUrl} imageClass="object-cover" postType={p.postType} question={p.question} abstract={p.abstract} article={p.article} imageAlt={p.imageAlt} title={p.title} desc={p.desc} tags={p.tags} author={p.authorName} authorPhoto={p.authorPhoto ?? null} width="w-full" height="h-fit" createdAt={p.createdAt.toDate().toLocaleString()} handleVisibility={() => handleVisibility(p.id)} menu="true" likes={p.likeCount} handleLike={(e) => handleLike(e, p.userId, p.id)} isLiked={isLiked} comments={p.commentCount} solution={p.solution}></PostCard>
               </div>
               ))}
             </div>

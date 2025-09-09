@@ -1,15 +1,15 @@
 import React from 'react'
 import Card from '../Card/Card'
-import { StarFilledIcon, DotsVerticalIcon, HeartIcon, HeartFilledIcon } from '@radix-ui/react-icons'
+import { StarFilledIcon, DotsVerticalIcon, ChatBubbleIcon } from '@radix-ui/react-icons'
 import { DropdownMenu } from 'radix-ui'
 import { Link } from 'react-router-dom'
+import Comment from '../Comments/Comment'
+import Like from '../Like/Like'
 
-
-
-function PostCard({ id, uid, postType, question, abstract, article, imageUrl, videoUrl, imageClass, imageAlt, imageSize = "max-h-[60%]" , title, desc, tags, rating, author, authorPhoto, width, height, createdAt, handleVisibility, menu, likes, isLiked, handleLike}) {
+function PostCard({ id, uid, postType, question, abstract, article, imageUrl, videoUrl, imageClass, imageAlt, imageSize = "max-h-[60%]" , title, desc, tags, rating, author, authorPhoto, width, height, createdAt, handleVisibility, menu, likes, comments, isLiked, handleLike, solution}) {
   return (
     <Link to={`/post/${uid}/${id}`}>
-        <Card className={`${width} ${height} shadow`} padding="p-0">
+        <Card className={`${width} ${height} shadow overflow-hidden`} padding="p-0">
             {/* Img */}
             {imageUrl && <img src={imageUrl} alt={imageAlt} className={`${imageClass} ${imageSize}`}/>}
             {videoUrl && <video src={videoUrl}></video>}
@@ -47,26 +47,16 @@ function PostCard({ id, uid, postType, question, abstract, article, imageUrl, vi
                 <p className="text-sm text-zinc-500 text-wrap">{desc || question || article}</p>
                 <div className="flex justify-between">
                     <div className="flex gap-2">
-                        {tags.map(tag => (
+                        {tags?.map(tag => (
                         <div className="bg-zinc-100 text-zinc-900 ring-1 ring-zinc-400 text-xs font-semibold w-fit py-1 px-3 rounded-full tracking-wide">{tag}</div>
                     ))}
                     </div>
                     <div className="flex gap-1 items-center">
-                        {!isLiked ? 
-                            <>
-                                <button onClick={handleLike} className="cursor-pointer hover:bg-red-200 rounded p-1">
-                                    <HeartIcon /> 
-                                </button>
-                                <span className="text-sm font-semibold text-zinc-500">{likes || 0}</span>
-                            </>
-                        :
-                            <>
-                                <button onClick={handleLike} className="cursor-pointer hover:bg-red-200 rounded p-1">
-                                    <HeartFilledIcon />
-                                </button>
-                                <span className="text-sm font-semibold text-zinc-500">{likes}</span>
-                            </>
-                        }
+                        <Like likes={likes} isLiked={isLiked} handleLike={handleLike} />
+                        <div className="flex gap-1 ml-2">
+                          <ChatBubbleIcon />
+                          <span className="text-sm font-semibold text-zinc-500">{comments || 0}</span>
+                        </div>
                     </div>
                 </div>
                 <div className="flex justify-between">
@@ -78,6 +68,8 @@ function PostCard({ id, uid, postType, question, abstract, article, imageUrl, vi
                     </div>
                 </div>
             </div>
+            {solution && 
+            <Comment comment={solution}/>}
         </Card>
     </Link>
   )

@@ -4,11 +4,14 @@ import { fetchAllPosts } from '../../utils/firebase';
 import Spinner from '../Spinner/Spinner';
 import Comments from '../Comments/Comments';
 import NewComment from '../NewComment.jsx/NewComment';
+import Like from '../Like/Like';
+import { doLike } from '../../utils/firebase';
 
 function PostView() {
     const { id, uid } = useParams();  
     const [loading, setLoading] = useState(false);
     const [post, setPost] = useState(null)
+    const [likeCount, setLikeCount] = useState(0);
     console.log("Post Data Debugging", post);
 
     useEffect(() => {
@@ -17,6 +20,7 @@ function PostView() {
             setLoading(true);
             const p = await fetchAllPosts({ postId: id, uid: uid });
             setPost(p[0]);
+            setLikeCount(p[0].likeCount)
         } catch (e) {
             console.log(e);
         } finally {
@@ -24,6 +28,20 @@ function PostView() {
         }
         })();
     }, []);
+
+     const handleLike = async (e, authorId, postId) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log(postId)
+    
+        try{
+            await doLike(authorId, postId)
+            setLikeCount(prev => prev + 1)
+        } catch (err) {
+          console.log(err);
+        }
+      
+      }
 
     if (loading) return <Spinner/>
 
@@ -56,6 +74,10 @@ function PostView() {
                 <div className="flex flex-col">
                     <h1 className="font-bold text-base">{post?.title}</h1>
                     <p className="text-base">{post?.desc || post?.article || post?.question}</p>
+                </div>
+                {/* Actions */}
+                <div className="mt-4 mb-4">
+                    <Like handleLike={(e) => handleLike(e, post.userId, post.id)} likes={likeCount}/>
                 </div>
                 {/* Comment */}
                 <NewComment />

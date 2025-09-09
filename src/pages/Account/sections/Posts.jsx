@@ -49,6 +49,7 @@ function Posts() {
         setIsDeleting(true);
         try {
             await deletePosts(selectedPosts);
+            setPosts(prev => prev.filter(p => !selectedPosts.includes(p.id)));
         } catch (err) {
             console.log(err);
         }
