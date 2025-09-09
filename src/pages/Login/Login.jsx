@@ -6,7 +6,7 @@ import { sendPasswordReset } from '../../utils/firebase';
 import { Form } from 'radix-ui';
 import AlertModal from '../../components/AlertModal/AlertModal';
 import {CheckCircledIcon} from '@radix-ui/react-icons'
-import { continueWithEmailPassword, continueWithGoogle } from '../../utils/firebase';
+import { continueWithEmailPassword, continueWithGoogle, logout } from '../../utils/firebase';
 import Spinner from '../../components/Spinner/Spinner';
 
 function Login() {
@@ -20,10 +20,10 @@ function Login() {
     const [resetMsg, setResetMsg] = useState("");
 
 
-    // Effect
-    useEffect(() => {
-        if (!loading && user && !user.isAnonymous) navigate("/", {replace:true});
-    }, [user, loading, navigate]);
+    // Effect to redir if loggedIn
+    // useEffect(() => {
+    //     if (!loading && user && !user.isAnonymous) navigate("/", {replace:true});
+    // }, [user, loading, navigate]);
 
     // State
     const [contact, setContact] = useState({
@@ -47,12 +47,14 @@ function Login() {
         setSubmitting(true);
         try {
           await continueWithEmailPassword(contact.email, contact.password);
-          navigate("/", { replace: true });
+          if (!loading && user && !user.isAnonymous) navigate("/", {replace:true});
+          setError("");
         } catch (err) {
           console.log(err.message);
           setError(err.message);
         } finally {
           setSubmitting(false);
+          
         }
     }
 
@@ -63,11 +65,14 @@ function Login() {
         try {
           await continueWithGoogle();
           console.log(user);
+          if (!loading && user && !user.isAnonymous) navigate("/", {replace:true});
+          setError("");
         } catch (err) {
           console.log(err.message);
           setError(err.message);
         } finally {
           setSubmitting(false);
+          
         }
     };
 
@@ -81,11 +86,23 @@ function Login() {
       }
     }
 
+    const onLogout = async() => {
+      try {
+        await logout();
+        if (!loading && user && user.isAnonymous) navigate("/login", {replace:true});
+        setError("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+      
+     
+
   return (
     <section className="flex mx-auto max-w-screen-xl min-h-[100dvh] w-full items-center justify-center">
       <article className="flex flex-col gap-4 w-fit">
         <Link to="/" className="text-zinc-600">Go Back</Link>
-
+        {user?.isAnonymous === true || user === null ?
         <Form.Root
           onSubmit={handleSubmit}
           className="ring-1 ring-zinc-200 flex flex-col gap-6 bg-zinc-100 min-h-[50dvh] min-w-[20dvw] p-10 shadow-2xl rounded"
@@ -178,6 +195,13 @@ function Login() {
           <AlertModal trigger="Forgot your password?" title="Reset your password" descText={resetMsg ? resetMsg : "Enter your email below:"} descInput={<input className="w-full bg-zinc-300 p-2 rounded" type="email" name="email" onChange={handleChange} value={contact.email} />} action="Send Reset" onClick={handleReset}></AlertModal>
 
         </Form.Root>
+        :
+        <div className="ring-1 ring-zinc-200 flex flex-col gap-6 bg-zinc-100 min-h-[fit] min-w-[20dvw] p-10 shadow-2xl rounded">
+        <h1 className="self-center font-semibold text-xl">DEV@Deakin</h1>
+        <p>Currently signed in as <span className="font-semibold">{user?.email}</span></p>
+        <button className="cursor-pointer rounded bg-zinc-900 px-3 py-2 text-m text-white font-medium hover:opacity-90" onClick={onLogout}>Logout</button>
+        </div>
+        }
         
       </article>
     </section>
