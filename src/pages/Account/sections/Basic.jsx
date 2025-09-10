@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../../context/AuthContext';
 import { Avatar, Toast } from 'radix-ui';
-import { PersonIcon, CheckCircledIcon, CrossCircledIcon, Pencil2Icon, CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
+import { PersonIcon, CheckCircledIcon, CrossCircledIcon, Pencil2Icon, CheckIcon, Cross2Icon, CubeIcon, RocketIcon } from '@radix-ui/react-icons';
 import Spinner from '../../../components/Spinner/Spinner';
 import { sendVerification, updateDisplayName, updateDisplayPicture, uploadImage } from '../../../utils/firebase';
 import FileUpload from '../../../components/FileUpload/FileUpload';
@@ -120,6 +120,18 @@ function Basic() {
           {editingDisplayPicture ? <div className="mt-4"><FileUpload fileName={fileName} file={file} handleUpload={handleUpload} handleUploadChange={handleUploadChange} /></div> : <button onClick={handleDisplayPictureToggle} className="absolute right-0 top-0 text-zinc-500 bg-zinc-100 hover:bg-zinc-200 cursor-pointer rounded"><Pencil2Icon/></button>}
           
         </Avatar.Root>
+        {/* Plan */}
+        {userData?.plan === "free" ?
+        <div className="flex gap-2 bg-emerald-200 w-fit py-1 px-2 rounded-full">
+          <p className="text-xs text-emerald-800">{userData?.plan.toUpperCase()} PLAN </p>
+          <CubeIcon className="text-emerald-800"/>
+        </div>
+        :
+        <div className="flex gap-2 bg-amber-200 w-fit py-1 px-2 rounded-full">
+          <p className="text-xs text-amber-800">{userData?.plan.toUpperCase()} PLAN </p>
+          <RocketIcon className="text-amber-800"/>
+        </div>
+        }
         {/* Display Name */}
         <div className="flex flex-col gap-2">
           Display Name
