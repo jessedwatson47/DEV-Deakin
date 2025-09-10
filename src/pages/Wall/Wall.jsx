@@ -20,14 +20,16 @@ export default function Wall() {
   const [query, setQuery] = useState(qParam);
   const [filterOption, setFilterOption] = useState(fParam);
   const [lastVisible, setLastVisible] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        const {posts, lastVisible} = await fetchAllPosts({ pageSize: 10 });
+        const {posts, lastVisible, hasMore} = await fetchAllPosts({ pageSize: 10 });
         setAllPosts(posts);
         setLastVisible(lastVisible);
+        setHasMore(hasMore);
       } catch (e) {
         console.log(e);
         setErr(e);
@@ -85,17 +87,18 @@ export default function Wall() {
       setParam('f', filter);
     } else {
       setFilterOption("none");
-      setPosts(allPosts);
+      setVisiblePosts(allPosts);
     }
     
   }
 
   const handleLoadMore = async() => {
-    let previousPosts = allPosts;
-    let { posts: morePosts, lastVisible: nextLastVisible } = await fetchAllPosts({ pageSize: 10, after: lastVisible });
-    const combined = [...previousPosts, ...morePosts]
-    setAllPosts(combined);
+    if (!hasMore) return;
+    const { posts: morePosts, lastVisible: nextLastVisible, hasMore: hm } = await fetchAllPosts({ pageSize: 10, after: lastVisible });
+
+    setAllPosts(prev => [...prev, ...morePosts]);
     setLastVisible(nextLastVisible);
+    setHasMore(hm);
   }
 
 
@@ -162,7 +165,7 @@ export default function Wall() {
               ))}
             </div>
           }
-          <button onClick={handleLoadMore} className="rounded-full transparent w-fit py-1 px-2 ring-1 ring-zinc-300 text-zinc-600 self-center cursor-pointer hover:ring-zinc-600 hover:text-zinc-900">Load More</button>
+          {hasMore ? <button onClick={handleLoadMore} className="rounded-full transparent w-fit py-1 px-2 ring-1 ring-zinc-300 text-zinc-600 self-center cursor-pointer hover:ring-zinc-600 hover:text-zinc-900">Load More</button> : <p className="rounded-full w-fit py-1 px-2 text-zinc-600 self-center">No more posts</p>}
       </div>
     </section>
   );
