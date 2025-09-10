@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { MagnifyingGlassIcon, MixerHorizontalIcon } from '@radix-ui/react-icons'
 import { DropdownMenu } from 'radix-ui';
 
-function SearchBar({ divClassName, inputClassName, buttonClassName, dropDown, dropDown1, dropDown2, dropDown3, dropDown4, filterOption, handleQuery, handleFilterOption, handleChange, query  }) {
+function SearchBar({ divClassName, inputClassName, button, buttonClassName, dropDown, dropDown1, dropDown2, dropDown3, dropDown4, filterOption, handleQuery, handleFilterOption, handleChange, query  }) {
 
   return (
     <>
@@ -48,7 +48,7 @@ function SearchBar({ divClassName, inputClassName, buttonClassName, dropDown, dr
                 <input className={inputClassName} type="text" name="query" value={query} onChange={handleChange}/>
                 
                 
-                <button className={buttonClassName} onClick={handleQuery}><MagnifyingGlassIcon className="w-6 h-6 text-zinc-500 hover:text-zinc-700"/></button>
+                {button ? <button className={buttonClassName} onClick={handleQuery}><MagnifyingGlassIcon className="w-6 h-6 text-zinc-500 hover:text-zinc-700"/></button> : ""}
             </div>
         :
             <div className={`flex ${divClassName}`}>

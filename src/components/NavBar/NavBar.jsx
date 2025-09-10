@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 // Radix
 import { NavigationMenu, Avatar } from 'radix-ui'
 import { DropdownMenu } from "radix-ui";
@@ -7,7 +7,7 @@ import {
   PersonIcon,
 } from "@radix-ui/react-icons";
 // ReactRouter
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 // Deakin Logos
 import DeakinBadge from '../../assets/deakin-logo-badge.png'
 // Auth
@@ -17,6 +17,20 @@ import SearchBar from '../SearchBar/SearchBar';
 function NavBar() {
   const { user, userData, authLoading, userLoading, logout } = useAuth();
   const signedIn = !!user && !user.isAnonymous;
+  const [query, setQuery] = useState("");
+  const [filterOption, setFilterOption] = useState("title");
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const q = e.target.value;
+    setQuery(q);
+  }
+
+  const handleQuery = () => {
+    if (!query) return;
+    const q = query.toLowerCase().trim();
+    navigate(`/wall?q=${encodeURIComponent(q)}&f=${filterOption.toLowerCase()}`);
+  }
 
   return (
     <header className="flex justify-center bg-gray-200 p-4">
@@ -29,7 +43,7 @@ function NavBar() {
           <NavigationMenu.List className="flex gap-2 items-center">
 
             <NavigationMenu.Item>
-              <SearchBar inputClassName="bg-white ring-1 ring-zinc-300 p-1" buttonClassName="right-0 top-0 bg-white ring-1 ring-zinc-300 hover:bg-zinc-200 cursor-pointer h-full p-1"/>
+              <SearchBar button={true} handleChange={handleChange} handleQuery={handleQuery} inputClassName="bg-white ring-1 ring-zinc-300 p-1" buttonClassName="right-0 top-0 bg-white ring-1 ring-zinc-300 hover:bg-zinc-200 cursor-pointer h-full p-1"/>
             </NavigationMenu.Item>
 
             <NavigationMenu.Item>
