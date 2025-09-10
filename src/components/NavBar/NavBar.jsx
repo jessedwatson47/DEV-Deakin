@@ -100,18 +100,18 @@ function NavBar() {
               <DropdownMenu.Content className="DropdownMenuContent flex flex-col gap-2 bg-gray-200 p-4 shadow-md rounded" sideOffset={5}>
                 {/* Dropdown Menu Items */}
                 
-                <DropdownMenu.Item className="DropdownMenuItem font-semibold text-white bg-teal-500 py-2 px-4 hover:bg-teal-600 rounded">
-                  <Link to="/post">Create a Post</Link>
+                <DropdownMenu.Item className="DropdownMenuItem font-semibold text-white bg-teal-500 flex hover:bg-teal-600 rounded">
+                  <Link to="/post" className="w-full h-full py-2 px-4 ">Create a Post</Link>
                 </DropdownMenu.Item>
 
-                <DropdownMenu.Item className="DropdownMenuItem py-2 px-4 hover:bg-zinc-100 rounded">
-                  <Link to="/account">Account</Link>
+                <DropdownMenu.Item className="DropdownMenuItem flex hover:bg-zinc-100 rounded text-center">
+                  <Link to="/account" className="w-full h-full py-2 px-4">Account</Link>
                 </DropdownMenu.Item>
 
             		<DropdownMenu.Separator className="DropdownMenuSeparator bg-gray-400 h-[1px]" />
 
-                <DropdownMenu.Item className="DropdownMenuItem text-red-500 py-2 px-4 hover:bg-zinc-100 rounded">
-                  <button className="cursor-pointer"onClick={logout}>Logout</button>
+                <DropdownMenu.Item className="DropdownMenuItem flex text-red-500 hover:bg-zinc-100 rounded">
+                  <button className="cursor-pointer w-full h-full py-2 px-4"onClick={logout}>Logout</button>
                 </DropdownMenu.Item>
 
               </DropdownMenu.Content>

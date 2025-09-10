@@ -20,7 +20,7 @@ function PostView() {
         (async () => {
         try {
             setLoading(true);
-            const p = await fetchAllPosts({ postId: id, uid: uid });
+            const { posts: p } = await fetchAllPosts({ postId: id, uid: uid });
             setPost(p[0]);
             setLikeCount(p[0].likeCount)
         } catch (e) {
