@@ -1,5 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import Modal from '../Modal/Modal';
+import { LoremIpsumText } from './LoremIpsum';
 
 function Footer() {
   const currentYear = new Date().getFullYear();
@@ -19,7 +21,7 @@ function Footer() {
         <div className="flex flex-col gap-1">
           <h4 className="text-lg mb-2 font-semibold">Support</h4>
           <NavLink to="/faq" className="text-sm hover:underline hover:underline-offset-3">FAQ</NavLink>
-          <NavLink to="/" className="text-sm hover:underline hover:underline-offset-3">Help</NavLink>
+          <NavLink to="/help" className="text-sm hover:underline hover:underline-offset-3">Help</NavLink>
           <NavLink to="/contact" className="text-sm hover:underline hover:underline-offset-3">Contact Us</NavLink>
         </div>
         {/* Stay Connected */}
@@ -52,9 +54,9 @@ function Footer() {
       <div className="flex flex-col max-w-screen-xl gap-2 items-center mx-auto">
         <h4 className="font-semibold text-xs">DEV@Deakin {currentYear}</h4>
         <div className="flex gap-2 max-w-screen-xl justify-center mx-auto text-xs">
-          <NavLink to="/" className="hover:underline hover:underline-offset-3">Privacy Policy</NavLink>
-          <NavLink to="/" className="hover:underline hover:underline-offset-3">Terms and Conditions</NavLink>
-          <NavLink to="/" className="hover:underline hover:underline-offset-3">Code of Conduct</NavLink>
+          <Modal triggerClass="hover:underline hover:underline-offset-3 cursor-pointer" trigger="Privacy Policy" title="Privacy Policy" titleClass="text-zinc-800 font-bold" desc={LoremIpsumText} descClass="text-zinc-600 text-xs whitespace-pre-line"></Modal>
+          <Modal triggerClass="hover:underline hover:underline-offset-3 cursor-pointer" trigger="Terms and Conditions" title="Terms and Conditions" titleClass="text-zinc-800 font-bold" desc={LoremIpsumText} descClass="text-zinc-600 text-xs whitespace-pre-line"></Modal>
+<Modal triggerClass="hover:underline hover:underline-offset-3 cursor-pointer" trigger="Code of Conduct" title="Code of Conduct" titleClass="text-zinc-800 font-bold" desc={LoremIpsumText} descClass="text-zinc-600 text-xs whitespace-pre-line"></Modal>
         </div>
       </div>
       
