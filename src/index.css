@@ -1,5 +1,6 @@
 /* Import Tailwind */
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @property --border-angle {
   inherits: false;
@@ -30,4 +31,9 @@ html, body, #root {
 
 @keyframes shimmer {
   100% { transform: translateX(100%); }
+}
+
+@keyframes shine {
+  0%   { background-position: 200% 0%; }
+  100% { background-position: -200% 0%; }
 }

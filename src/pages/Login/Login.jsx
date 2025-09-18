@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { sendPasswordReset } from '../../utils/firebase';
+import { reloadUser, sendPasswordReset } from '../../utils/firebase';
 import { Form } from 'radix-ui';
 import AlertModal from '../../components/AlertModal/AlertModal';
 import {CheckCircledIcon} from '@radix-ui/react-icons'
@@ -12,7 +12,7 @@ import Spinner from '../../components/Spinner/Spinner';
 function Login() {
     const navigate = useNavigate();
 
-    const { user, loading } = useAuth();
+    const { user, userLoading, authLoading} = useAuth();
 
 
     const [submitting, setSubmitting] = useState(false);
@@ -47,6 +47,7 @@ function Login() {
         setSubmitting(true);
         try {
           await continueWithEmailPassword(contact.email, contact.password);
+          await reloadUser(user);
           navigate("/", {replace:true});
           setError("");
         } catch (err) {
@@ -64,6 +65,7 @@ function Login() {
         setSubmitting(true);
         try {
           await continueWithGoogle();
+          await reloadUser(user);
           navigate("/", {replace:true});
           setError("");
         } catch (err) {
@@ -101,7 +103,7 @@ function Login() {
     <section className="flex mx-auto max-w-screen-xl min-h-[100dvh] w-full items-center justify-center">
       <article className="flex flex-col gap-4 w-fit">
         <Link to="/" className="text-zinc-600">Go Back</Link>
-        {user?.isAnonymous === true || user === null ?
+        {(user?.isAnonymous || user === null || userLoading || authLoading) ?
         <Form.Root
           onSubmit={handleSubmit}
           className="ring-1 ring-zinc-200 flex flex-col gap-6 bg-zinc-100 min-h-[50dvh] min-w-[20dvw] p-10 shadow-2xl rounded"

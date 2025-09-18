@@ -26,8 +26,9 @@ export function AuthProvider({ children }) {
           } catch (e) {
             console.error("Anon sign-in failed:", e);
           }
+        } else {
+          setUser(u);
         }
-        setUser(u);
         setAuthLoading(false);
       });
     })();

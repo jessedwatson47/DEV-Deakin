@@ -56,7 +56,7 @@ function Footer() {
         <div className="flex gap-2 max-w-screen-xl justify-center mx-auto text-xs">
           <Modal triggerClass="hover:underline hover:underline-offset-3 cursor-pointer" trigger="Privacy Policy" title="Privacy Policy" titleClass="text-zinc-800 font-bold" desc={LoremIpsumText} descClass="text-zinc-600 text-xs whitespace-pre-line"></Modal>
           <Modal triggerClass="hover:underline hover:underline-offset-3 cursor-pointer" trigger="Terms and Conditions" title="Terms and Conditions" titleClass="text-zinc-800 font-bold" desc={LoremIpsumText} descClass="text-zinc-600 text-xs whitespace-pre-line"></Modal>
-<Modal triggerClass="hover:underline hover:underline-offset-3 cursor-pointer" trigger="Code of Conduct" title="Code of Conduct" titleClass="text-zinc-800 font-bold" desc={LoremIpsumText} descClass="text-zinc-600 text-xs whitespace-pre-line"></Modal>
+          <Modal triggerClass="hover:underline hover:underline-offset-3 cursor-pointer" trigger="Code of Conduct" title="Code of Conduct" titleClass="text-zinc-800 font-bold" desc={LoremIpsumText} descClass="text-zinc-600 text-xs whitespace-pre-line"></Modal>
         </div>
       </div>
       

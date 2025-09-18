@@ -16,7 +16,6 @@ import SearchBar from '../SearchBar/SearchBar';
 
 function NavBar() {
   const { user, userData, authLoading, userLoading, logout } = useAuth();
-  const signedIn = !!user && !user.isAnonymous;
   const [query, setQuery] = useState("");
   const [filterOption, setFilterOption] = useState("title");
   const navigate = useNavigate();
@@ -75,7 +74,7 @@ function NavBar() {
         </NavigationMenu.Root>
 
         {/* Auth Links*/}
-        {signedIn ? (
+        {user && !user.isAnonymous ? (
           <div className="flex items-center gap-4">
             <Avatar.Root className="AvatarRoot">
               <Avatar.Image

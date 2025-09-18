@@ -29,6 +29,7 @@ import Posts from './pages/Account/sections/Posts'
 import PostView from './components/PostView/PostView'
 import FAQ from './pages/FAQ/FAQ'
 import Help from './pages/Help/Help'
+import OrderSummary from './pages/OrderSummary/OrderSummary'
 
 
 
@@ -50,6 +51,7 @@ function App() {
           <Route path="faq" element={<FAQ />}/>
           <Route path="help" element={<Help />}/>
           <Route path="post/:uid/:id" element={<PostView />}/>
+          <Route path="summary" element={<OrderSummary />}/>
         </Route>
 
         {/* Auth Layout (No NavBar) */}

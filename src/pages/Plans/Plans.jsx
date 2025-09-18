@@ -1,6 +1,6 @@
 import React from 'react'
 import Card from '../../components/Card/Card'
-import { CheckCircledIcon, CrossCircledIcon } from '@radix-ui/react-icons'
+import { CheckCircledIcon, CrossCircledIcon, CubeIcon, RocketIcon } from '@radix-ui/react-icons'
 import { callCreateCheckoutSession, stripePromise } from '../../utils/firebase'
 
 function Plans() {
@@ -16,13 +16,13 @@ function Plans() {
 
 
   return (
-    <section className="flex flex-col max-w-screen-xl min-h-[100dvh] w-fit mx-auto gap-4 mt-8">
+    <section className="flex flex-col max-w-screen-xl h-fit w-fit mx-auto gap-4 mt-8">
         <h1 className="text-2xl">Plans</h1>
         <div className="flex gap-4">
             {/* Free Plan */}
             <article>
-                <Card className="gap-4 w-[380px] h-fit">
-                    <div className="rounded-full font-semibold bg-zinc-700 text-white px-3 py-1 w-fit">Personal</div>
+                <Card className="gap-4 w-[380px] h-fit shadow-xl border-2 border-zinc-200">
+                    <div className="rounded-full font-semibold bg-zinc-700 text-white px-3 py-1 w-fit flex gap-2 items-center">Personal <CubeIcon/></div>
                     <div className="flex gap-1">
                         <h2 className="text-4xl">Free</h2>
                     </div>
@@ -39,8 +39,8 @@ function Plans() {
             </article>
             {/* Pro Plan */}
             <article>
-                <Card className="gap-4 w-[380px] h-fit border-[2px] [background:linear-gradient(0deg,#ffe48a,#ffffff_65%,#ffffff)_padding-box,conic-gradient(from_var(--border-angle),#fcd34d_80%,#f57402_100%)_border-box] border border-transparent animate-border">
-                    <div className="rounded-full font-semibold bg-amber-300 text-zinc-700 px-3 py-1 w-fit">Pro</div>
+                <Card className="gap-4 w-[380px] h-fit border-[2px] [background:linear-gradient(0deg,#ffe48a,#ffffff_65%,#ffffff)_padding-box,conic-gradient(from_var(--border-angle),#fcd34d_80%,#f57402_100%)_border-box] border border-transparent animate-border shadow-xl">
+                    <div className="rounded-full font-semibold bg-amber-300 text-zinc-700 px-3 py-1 w-fit flex gap-2 items-center">Pro <RocketIcon/></div>
                     <div className="flex gap-1 items-center">
                         <h2 className="text-4xl">$15</h2>
                         <span className="text-xs">per month</span>

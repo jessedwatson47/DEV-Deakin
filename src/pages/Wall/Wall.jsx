@@ -5,6 +5,7 @@ import Spinner from "../../components/Spinner/Spinner";
 import WallSkeleton from "../../components/Skeleton/WallSkeleton";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import { Link, useSearchParams} from "react-router-dom";
+import removeMd from "remove-markdown";
 
 export default function Wall() {
   const [allPosts, setAllPosts] = useState([]);
@@ -63,11 +64,13 @@ export default function Wall() {
       }
     } else if (f === "tag") {
       filtered = allPosts.filter(p => p.tags.includes(q));
+      setNoResults(false);
       if (filtered.length === 0) {
         setNoResults(true);
       }
     } else if (f === "date") {
       filtered = allPosts.filter(p => p.createdAt.toDate().toLocaleString().includes(q));
+      setNoResults(false);
       if (filtered.length === 0) {
         setNoResults(true);
       }
@@ -108,7 +111,9 @@ export default function Wall() {
     setParam('q', q.toLowerCase());
   }
 
-  const handleVisibility = (postId) => {
+  const handleVisibility = (e, postId) => {
+    e.preventDefault();
+    e.stopPropagation();
     setVisiblePosts(prev => prev.filter(post => post.id !== postId));
   }
 
@@ -160,7 +165,7 @@ export default function Wall() {
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 [column-fill:_balance]">
               {visiblePosts.map(p => (
               <div key={p.id} className="break-inside-avoid mb-6">
-                <PostCard id={p.id} uid={p.userId} imageUrl={p.imageUrl} videoUrl={p.videoUrl} imageClass="object-cover" postType={p.postType} question={p.question} abstract={p.abstract} article={p.article} imageAlt={p.imageAlt} title={p.title} desc={p.desc} tags={p.tags} author={p.authorName} authorPhoto={p.authorPhoto ?? null} width="w-full" height="h-fit" createdAt={p.createdAt.toDate().toLocaleString()} handleVisibility={() => handleVisibility(p.id)} menu="true" likes={p.likeCount} handleLike={(e) => handleLike(e, p.userId, p.id)} isLiked={isLiked} comments={p.commentCount} solution={p.solution}></PostCard>
+                <PostCard id={p.id} uid={p.userId} imageUrl={p.imageUrl} videoUrl={p.videoUrl} imageClass="object-cover" postType={p.postType} question={removeMd(p.question)} abstract={p.abstract} article={p.article} imageAlt={p.imageAlt} title={p.title} desc={p.desc} tags={p.tags} author={p.authorName} authorPhoto={p.authorPhoto ?? null} width="w-full" height="h-fit" createdAt={p.createdAt.toDate().toLocaleString()} handleVisibility={(e) => handleVisibility(e, p.id)} menu="true" likes={p.likeCount} handleLike={(e) => handleLike(e, p.userId, p.id)} isLiked={isLiked} comments={p.commentCount} solution={p.solution}></PostCard>
               </div>
               ))}
             </div>

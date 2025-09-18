@@ -5,6 +5,12 @@ import { createPost, uploadImage, uploadVideo } from '../../utils/firebase';
 import { Toast } from 'radix-ui';
 import { Cross2Icon } from '@radix-ui/react-icons';
 
+// MD
+import MarkDown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import rehypeHighlight from 'rehype-highlight'
+import "highlight.js/styles/github-dark-dimmed.css";
+
 
 function NewPost() {
     const { user } = useAuth();
@@ -15,6 +21,7 @@ function NewPost() {
     const [imageUrl, setImageUrl] = useState("");
     const [videoUrl, setVideoUrl] = useState("");
     const [isUploading, setIsUploading] = useState(false);
+    const [videoObject, setVideoObject] = useState(null);
 
     const [post, setPost] = useState({
         postType: "question",
@@ -25,7 +32,7 @@ function NewPost() {
         article: "",
         imageUrl: "",
         videoUrl: "",
-        likes: 0,
+        likeCount: 0,
     });
 
 
@@ -49,10 +56,10 @@ function NewPost() {
         {
             try {
                 url = await uploadVideo(file);
+                console.log(metadata);
                 setVideoUrl(url);
-                console.log("video uploaded");
                 setPost( (prev) => {
-                return {...prev, videoUrl: url}});
+                return {...prev, videoUrl: url }});
             } catch (err) {
                 console.log(err);
                 setIsUploading(false);
@@ -170,6 +177,12 @@ function NewPost() {
                 <input className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="title" onChange={handleChange} id="question-title" placeholder="Start your question with how, what, why, etc."/>
                 <label htmlFor="question-content">Question</label>
                 <textarea className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-40 w-full resize-none" name="question" id="question-content" onChange={handleChange}/>
+                Preview
+                <div className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-fit w-full prose">
+                    <MarkDown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
+                        {post.question}
+                    </MarkDown>
+                </div>
                 <label htmlFor="question-tags">Tags</label>
                 <input className="mb-2 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="tags" id="question-tags" onKeyDown={handleKeyDown} placeholder="Press Enter to add a tag"/>
                 <div className="flex gap-2">
@@ -194,6 +207,12 @@ function NewPost() {
                 <textarea className="mb-4 resize-none bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full h-20" name="abstract" onChange={handleChange} id="article-abstract" placeholder="Enter a 1-paragraph abstract"/>
                 <label htmlFor="article-content">Article Text</label>
                 <textarea className="mb-4 resize-none bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full h-40" name="article" onChange={handleChange} id="article-content" placeholder="Write your article here"/>
+                Preview
+                <div className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-40 w-full prose">
+                    <MarkDown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
+                        {post.article}
+                    </MarkDown>
+                </div>
                 <label htmlFor="article-tags">Tags</label>
                 <input className="mb-2 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full submit-none" type="text" name="tags" onKeyDown={handleKeyDown} id="article-tags" placeholder="Press Enter to add a tag"/>
                 <div className="flex gap-2">
@@ -216,6 +235,12 @@ function NewPost() {
                 <input className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="title" onChange={handleChange} id="question-title" placeholder="Choose a relevant title"/>
                 <label htmlFor="question-content">Description</label>
                 <textarea className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-40 w-full resize-none" name="question" id="question-content" onChange={handleChange} placeholder="Add extra information"/>
+                Preview
+                <div className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-40 w-full prose">
+                    <MarkDown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
+                        {post.description}
+                    </MarkDown>
+                </div>
                 <label htmlFor="question-tags">Tags</label>
                 <input className="mb-2 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="tags" id="question-tags" onKeyDown={handleKeyDown} placeholder="Press Enter to add a tag"/>
                 <div className="flex gap-2">

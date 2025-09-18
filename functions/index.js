@@ -25,7 +25,7 @@ export const createCheckoutSession = onCall({ secrets: [key], enforceAppCheck: f
             quantity: 1,
         }],
         mode: "subscription",
-        success_url: "http://localhost:5173/",
+        success_url: `http://localhost:5173/summary?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: "http://localhost:5173/plans",
         client_reference_id: user.uid
         

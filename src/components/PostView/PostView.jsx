@@ -9,12 +9,19 @@ import { doLike } from '../../utils/firebase';
 import 'plyr/dist/plyr.css';
 import Plyr from 'plyr';
 
+// MD
+import MarkDown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import rehypeHighlight from 'rehype-highlight'
+import "highlight.js/styles/github-dark-dimmed.css";
+
 function PostView() {
     const { id, uid } = useParams();  
     const [loading, setLoading] = useState(false);
     const [post, setPost] = useState(null)
     const [likeCount, setLikeCount] = useState(0);
     console.log("Post Data Debugging", post);
+    const viewCount = 55;
 
     useEffect(() => {
         (async () => {
@@ -27,6 +34,7 @@ function PostView() {
             console.log(e);
         } finally {
             setLoading(false);
+            console.log(post);
         }
         })();
     }, []);
@@ -52,6 +60,8 @@ function PostView() {
       }
 
     if (loading) return <div className="w-fit mx-auto"><Spinner/></div>
+
+    
 
   return (
     <section className="max-w-screen-xl mx-auto mt-4 mb-4 flex">
@@ -81,11 +91,18 @@ function PostView() {
                 </div>
                 <div className="flex flex-col">
                     <h1 className="font-bold text-base">{post?.title}</h1>
-                    <p className="text-base">{post?.desc || post?.article || post?.question}</p>
+                    <div className="prose">
+                        <MarkDown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
+                            {post?.desc || post?.article || post?.question}
+                        </MarkDown>
+                    </div>
                 </div>
-                {/* Actions */}
-                <div className="mt-4 mb-4">
+                {/* Actions / Info*/}
+                <div className="mt-4 mb-4 flex gap-4">
+                    {post?.videoUrl && 
+                    <span className="text-base">{viewCount} views</span>}
                     <Like handleLike={(e) => handleLike(e, post.userId, post.id)} likes={likeCount}/>
+                    {post?.videoMetadata}
                 </div>
                 {/* Comment */}
                 <NewComment />

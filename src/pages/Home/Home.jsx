@@ -4,6 +4,7 @@ import FeaturedPosts from '../../components/FeaturedPosts/FeaturedPosts'
 import NewsletterSignUp from '../../components/NewsletterSignUp/NewsletterSignUp'
 
 function Home() {
+
   return (
     <>
       <Hero />

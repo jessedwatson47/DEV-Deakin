@@ -8,7 +8,7 @@ import { useAuth } from '../../context/AuthContext';
 
 function Signup() {
     // Auth State
-    const { loading } = useAuth();
+    const { userLoading } = useAuth();
 
     
     // Hooks
@@ -33,7 +33,7 @@ function Signup() {
     }
 
     console.log(contact);
-    console.log(loading);
+    console.log(userLoading);
 
    const handleSubmit = async (e) => {
     e.preventDefault();

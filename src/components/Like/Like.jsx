@@ -5,19 +5,19 @@ function Like({ likes, isLiked, handleLike }) {
   return (
     <>
       {!isLiked ? (
-        <>
+        <div className="flex items-center gap-0.5">
           <button onClick={handleLike} className="cursor-pointer hover:bg-red-200 rounded p-1">
-            <HeartIcon />
+            <HeartIcon className="w-4 h-4"/>
           </button>
-          <span className="text-sm font-semibold text-zinc-500">{likes || 0}</span>
-        </>
+          <span className="text-base font-semibold text-zinc-500">{likes || 0}</span>
+        </div>
       ) : (
-        <>
+        <div className="flex items-center gap-0.5">
           <button onClick={handleLike} className="cursor-pointer hover:bg-red-200 rounded p-1">
-            <HeartFilledIcon />
+            <HeartFilledIcon  className="w-4 h-4"/>
           </button>
-          <span className="text-sm font-semibold text-zinc-500">{likes}</span>
-        </>
+          <span className="text-base font-semibold text-zinc-500">{likes}</span>
+        </div>
       )}
     </>
   );
