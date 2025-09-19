@@ -80,7 +80,7 @@ function App() {
 
       <Toast.Viewport
         className="
-          fixed bottom-4 right-4 z-[9999]
+          fixed top-4 right-4 z-[9999]
           flex flex-col gap-2 w-[360px] max-w-[100vw]
           outline-none
         "

@@ -3,6 +3,7 @@ import { useAuth } from './context/AuthContext'
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import NavBar from './components/NavBar/NavBar';
 import Footer from './components/Footer/Footer';
+import DEVBot from './components/DEVBot/DEVBot';
 
 function SignedInGuard() {
     const { user , authLoading } = useAuth();
@@ -15,6 +16,7 @@ function SignedInGuard() {
     return (
     signedIn ?  <div className="min-h-[100dvh] flex flex-col">
             <NavBar />
+            <DEVBot />
             <main className="flex-1 gap-8">
                 <Outlet/>
             </main>
