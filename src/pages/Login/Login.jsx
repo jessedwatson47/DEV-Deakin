@@ -1,13 +1,14 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, ServerRouter, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { reloadUser, sendPasswordReset } from '../../utils/firebase';
+import { reloadUser, resolveTotp, sendPasswordReset } from '../../utils/firebase';
 import { Form } from 'radix-ui';
 import AlertModal from '../../components/AlertModal/AlertModal';
 import {CheckCircledIcon} from '@radix-ui/react-icons'
 import { continueWithEmailPassword, continueWithGoogle, logout } from '../../utils/firebase';
 import Spinner from '../../components/Spinner/Spinner';
+import { unstable_OneTimePasswordField as OneTimePasswordField } from "radix-ui";
 
 function Login() {
     const navigate = useNavigate();
@@ -18,6 +19,9 @@ function Login() {
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState("");
     const [resetMsg, setResetMsg] = useState("");
+    const [requireOTP, setRequireOTP] = useState(false);
+    const [verificationCode, setVerificationCode] = useState("");
+    const [mfaResolver, setMfaResolver] = useState(null);
 
 
     // Effect to redir if loggedIn
@@ -63,12 +67,24 @@ function Login() {
         e.preventDefault();
         setError("");
         setSubmitting(true);
+
+
         try {
-          await continueWithGoogle();
+          const res = await continueWithGoogle();
+          console.log("res",res);
+          
+          if (res?.mfaResolver) {
+            setRequireOTP(true);
+            setMfaResolver(res.mfaResolver);
+            console.log("INGOOGLE", res.mfaResolver)
+            return;
+          }
+
           await reloadUser(user);
           navigate("/", {replace:true});
           setError("");
         } catch (err) {
+
           console.log(err.message);
           setError(err.message);
         } finally {
@@ -96,7 +112,24 @@ function Login() {
         console.error(err);
       }
     }
-      
+
+    const handleVerify = async () => {
+      setSubmitting(true);
+      setError("");
+      try {
+        await resolveTotp(mfaResolver, verificationCode);
+        setMfaResolver(null);
+        setRequireOTP(false);
+        setVerificationCode("");
+        navigate("/", { replace: true });
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setSubmitting(false);
+      }
+    }
+
+    console.log("MFARES",mfaResolver);
      
 
   return (
@@ -147,7 +180,21 @@ function Login() {
               Password is required.
             </Form.Message>
           </Form.Field>
-
+          {/* OTP IF TOTP ACTIVATED */}
+          {requireOTP && 
+          <div className="flex flex-col gap-2 items-center">
+            <span className="text-lg font-semibold">Enter your 6-digit code</span>
+            <OneTimePasswordField.Root className="flex gap-0.5 nowrap" value={verificationCode} onValueChange={setVerificationCode} autoSubmit maxLength={6} onAutoSubmit={handleVerify}>
+              <OneTimePasswordField.Input className="bg-white border-1 rounded unset flex align-center justify-center text-center shadow h-[70px] w-[48px] text-2xl" />
+              <OneTimePasswordField.Input className="bg-white border-1 rounded unset flex align-center justify-center text-center shadow h-[70px] w-[48px] text-2xl" />
+              <OneTimePasswordField.Input className="bg-white border-1 rounded unset flex align-center justify-center text-center shadow h-[70px] w-[48px] text-2xl" />
+              <OneTimePasswordField.Input className="bg-white border-1 rounded unset flex align-center justify-center text-center shadow h-[70px] w-[48px] text-2xl" />
+              <OneTimePasswordField.Input className="bg-white border-1 rounded unset flex align-center justify-center text-center shadow h-[70px] w-[48px] text-2xl" />
+              <OneTimePasswordField.Input className="bg-white border-1 rounded unset flex align-center justify-center text-center shadow h-[70px] w-[48px] text-2xl" />
+              <OneTimePasswordField.HiddenInput />
+            </OneTimePasswordField.Root>
+          </div>
+          }
           {/* Submit */}
           <Form.Submit asChild>
             {submitting 

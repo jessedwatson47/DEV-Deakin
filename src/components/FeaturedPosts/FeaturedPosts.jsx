@@ -3,6 +3,8 @@ import PostCard from '../PostCard/PostCard'
 import { fetchAllPosts, fetchFeaturedPosts } from '../../utils/firebase'
 import Spinner from '../Spinner/Spinner';
 import PostCardSkeleton from '../Skeleton/PostCardSkeleton';
+import removeMd from 'remove-markdown';
+
 
 function FeaturedPosts() {
   const [loading, setLoading] = useState(false);
@@ -39,7 +41,7 @@ function FeaturedPosts() {
           : 
           posts.map(p => (
               <div key={p?.id} className="w-full">
-                <PostCard id={p?.id} uid={p?.userId} imageUrl={p?.imageUrl} imageClass="object-cover" imageSize='w-full aspect-[16/9]' postType={p?.postType} question={p?.question} abstract={p?.abstract} article={p?.article} imageAlt={p?.imageAlt} title={p?.title} desc={p?.desc} tags={p?.tags} author={p?.authorName} authorPhoto={p?.authorPhoto ?? null} width="w-full" createdAt={p?.createdAt.toDate().toLocaleString()} likes={p.likeCount} comments={p.commentCount} ></PostCard>
+                <PostCard id={p?.id} uid={p?.userId} imageUrl={p?.imageUrl} imageClass="object-cover" imageSize='w-full aspect-[16/9]' postType={p?.postType} question={removeMd(p?.question)} abstract={p?.abstract} article={removeMd(p?.article)} imageAlt={p?.imageAlt} title={p?.title} desc={removeMd(p?.desc)} tags={p?.tags} author={p?.authorName} authorPhoto={p?.authorPhoto ?? null} width="w-full" createdAt={p?.createdAt.toDate().toLocaleString()} likes={p.likeCount} comments={p.commentCount} ></PostCard>
               </div>
               ))
           }

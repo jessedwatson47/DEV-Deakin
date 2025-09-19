@@ -165,7 +165,7 @@ export default function Wall() {
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 [column-fill:_balance]">
               {visiblePosts.map(p => (
               <div key={p.id} className="break-inside-avoid mb-6">
-                <PostCard id={p.id} uid={p.userId} imageUrl={p.imageUrl} videoUrl={p.videoUrl} imageClass="object-cover" postType={p.postType} question={removeMd(p.question)} abstract={p.abstract} article={p.article} imageAlt={p.imageAlt} title={p.title} desc={p.desc} tags={p.tags} author={p.authorName} authorPhoto={p.authorPhoto ?? null} width="w-full" height="h-fit" createdAt={p.createdAt.toDate().toLocaleString()} handleVisibility={(e) => handleVisibility(e, p.id)} menu="true" likes={p.likeCount} handleLike={(e) => handleLike(e, p.userId, p.id)} isLiked={isLiked} comments={p.commentCount} solution={p.solution}></PostCard>
+                <PostCard id={p.id} uid={p.userId} imageUrl={p.imageUrl} videoUrl={p.videoUrl} imageClass="object-cover" postType={p.postType} question={removeMd(p.question)} abstract={p.abstract} article={removeMd(p.article)} imageAlt={p.imageAlt} title={p.title} desc={removeMd(p.desc)} tags={p.tags} author={p.authorName} authorPhoto={p.authorPhoto ?? null} width="w-full" height="h-fit" createdAt={p.createdAt.toDate().toLocaleString()} handleVisibility={(e) => handleVisibility(e, p.id)} menu="true" likes={p.likeCount} handleLike={(e) => handleLike(e, p.userId, p.id)} isLiked={isLiked} comments={p.commentCount} solution={p.solution}></PostCard>
               </div>
               ))}
             </div>

@@ -2,9 +2,9 @@ import React from 'react'
 import { Dialog } from 'radix-ui'
 import { Cross2Icon } from '@radix-ui/react-icons'
 
-function Modal({trigger, triggerClass, title, titleClass, desc, descClass}) {
+function Modal({trigger, triggerClass, title, titleClass, desc, descClass, open, onOpenChange}) {
   return (
-    <Dialog.Root>
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
 		<Dialog.Trigger asChild>
 			<button className={triggerClass}>{trigger}</button>
 		</Dialog.Trigger>
