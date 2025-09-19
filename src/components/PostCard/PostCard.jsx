@@ -1,6 +1,6 @@
 import React from 'react'
 import Card from '../Card/Card'
-import { StarFilledIcon, DotsVerticalIcon, ChatBubbleIcon } from '@radix-ui/react-icons'
+import { StarFilledIcon, DotsVerticalIcon, ChatBubbleIcon, PlayIcon} from '@radix-ui/react-icons'
 import { DropdownMenu } from 'radix-ui'
 import { Link } from 'react-router-dom'
 import Comment from '../Comments/Comment'
@@ -12,7 +12,7 @@ function PostCard({ id, uid, postType, question, abstract, article, imageUrl, vi
         <Card className={`${width} ${height} shadow overflow-hidden h-full flex flex-col`} padding="p-0">
             {/* Media */}
             {imageUrl && <img src={imageUrl} alt={imageAlt} className={`${imageClass} ${imageSize}`}/>}
-            {videoUrl && <video src={videoUrl}></video>}
+            {videoUrl && <div className="relative inline-block"><video src={videoUrl}></video> <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white bg-teal-500 rounded-full p-2 opacity-90 hover:opacity-80"><PlayIcon className="h-8 w-8"/></div> </div>}
             {/* Text */}
             <div className="flex flex-col gap-2 p-4 h-full">
                 <div className="flex justify-between">

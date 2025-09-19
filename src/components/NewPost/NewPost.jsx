@@ -33,6 +33,8 @@ function NewPost() {
         imageUrl: "",
         videoUrl: "",
         likeCount: 0,
+        viewCount: 0,
+        authorId: user.uid,
     });
 
 
@@ -56,7 +58,6 @@ function NewPost() {
         {
             try {
                 url = await uploadVideo(file);
-                console.log(metadata);
                 setVideoUrl(url);
                 setPost( (prev) => {
                 return {...prev, videoUrl: url }});
@@ -178,7 +179,7 @@ function NewPost() {
                 <label htmlFor="question-content">Question</label>
                 <textarea className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-40 w-full resize-none" name="question" id="question-content" onChange={handleChange}/>
                 Preview
-                <div className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-fit w-full prose">
+                <div className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-40 overflow-scroll w-full prose">
                     <MarkDown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
                         {post.question}
                     </MarkDown>
@@ -208,7 +209,7 @@ function NewPost() {
                 <label htmlFor="article-content">Article Text</label>
                 <textarea className="mb-4 resize-none bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full h-40" name="article" onChange={handleChange} id="article-content" placeholder="Write your article here"/>
                 Preview
-                <div className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-40 w-full prose">
+                <div className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-40 overflow-scroll w-full prose">
                     <MarkDown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
                         {post.article}
                     </MarkDown>
@@ -231,18 +232,19 @@ function NewPost() {
             <h3 className="text-lg font-semibold">What is the tutorial about?</h3>
             <div className="flex flex-col gap-1">
                 <FileUpload accept="video/*" file={file} fileName={fileName} handleUpload={handleUpload} handleUploadChange={handleUploadChange} imageUrl={imageUrl}/>
-                <label htmlFor="question-title">Title</label>
-                <input className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="title" onChange={handleChange} id="question-title" placeholder="Choose a relevant title"/>
-                <label htmlFor="question-content">Description</label>
-                <textarea className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-40 w-full resize-none" name="question" id="question-content" onChange={handleChange} placeholder="Add extra information"/>
+                {videoUrl && <p className="text-xs text-emerald-500">Video uploaded successfully!</p>}
+                <label htmlFor="tutorial-title">Title</label>
+                <input className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="title" onChange={handleChange} id="tutorial-title" placeholder="Choose a relevant title"/>
+                <label htmlFor="tutorial-content">Description</label>
+                <textarea className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-40 w-full resize-none" name="description" id="tutorial-content" onChange={handleChange} placeholder="Add extra information"/>
                 Preview
-                <div className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-40 w-full prose">
+                <div className="mb-4 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-40 overflow-scroll w-full prose">
                     <MarkDown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
                         {post.description}
                     </MarkDown>
                 </div>
-                <label htmlFor="question-tags">Tags</label>
-                <input className="mb-2 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="tags" id="question-tags" onKeyDown={handleKeyDown} placeholder="Press Enter to add a tag"/>
+                <label htmlFor="tutorial-tags">Tags</label>
+                <input className="mb-2 bg-white p-2 rounded text-zinc-600 ring-1 ring-zinc-200 h-10 w-full" type="text" name="tags" id="tutorial-tags" onKeyDown={handleKeyDown} placeholder="Press Enter to add a tag"/>
                 <div className="flex gap-2">
                     {post.tags.map(tag => (
                     <div className="flex gap-1 bg-transparent text-zinc-900 ring-1 ring-zinc-400 text-xs font-semibold w-fit py-1 px-3 rounded-full tracking-wide">

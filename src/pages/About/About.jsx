@@ -1,11 +1,5 @@
-import React, {useState} from 'react'
-import { sendToChat } from '../../utils/openai'
-import ShinyText from '../../components/ShinyText/ShinyText'
-import MarkDown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import rehypeHighlight from 'rehype-highlight'
-import "highlight.js/styles/github-dark-dimmed.css";
-import DEVBot from '../../components/DEVBot/DEVBot'
+import React from 'react'
+
 
 
 function About() {

@@ -15,7 +15,6 @@
     "@tailwindcss/vite": "^4.1.12",
     "firebase": "^12.1.0",
     "firebase-admin": "^13.5.0",
-    "openai": "^5.20.1",
     "plyr": "^3.8.3",
     "radix-ui": "^1.4.3",
     "react": "^19.1.1",

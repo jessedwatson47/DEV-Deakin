@@ -2,6 +2,7 @@ import {onCall, HttpsError, onRequest} from "firebase-functions/v2/https";
 import { defineSecret } from "firebase-functions/params";
 import Stripe from "stripe";
 import sgMail from "@sendgrid/mail"
+import OpenAI from "openai";
 
 import {initializeApp} from "firebase-admin/app";
 import {getFirestore} from "firebase-admin/firestore";
@@ -10,6 +11,7 @@ const app = initializeApp();
 const key = defineSecret("STRIPE_S_KEY") // Secrey key
 const wh_secret = defineSecret("STRIPE_WH_KEY") // Webhook key
 const SG_KEY = defineSecret("SENDGRID_API_KEY"); // sendgrid key
+const OPEN_AI_KEY = defineSecret("OPEN_AI_KEY"); // OPENAI key
 
 const db = getFirestore(app);
 
@@ -109,3 +111,32 @@ export const subscribeToNewsletter = onCall({ secrets: [SG_KEY] }, async (req) =
         return {ok: false, error: err.message}
     }
 })
+
+// OpenAI --- DEVBot
+
+export const sendToChat = onCall( {secrets: [OPEN_AI_KEY] },  async (req) => {
+    const query = req.data.trim();
+    
+    if (!query) throw new Error("Enter something to chat!");
+
+    const client = new OpenAI({ apiKey: OPEN_AI_KEY.value() })
+
+    const DEVBOT = `
+    You are DEVBot. Always write GitHub-Flavored Markdown.
+    - In your first message, always introduce yourself as DEVBot with a robot emoji.
+    - You exist to serve students who need help with programming and development.
+    - Be kind, slightly sycophantic and encouraging to promote happiness and overall learning experience.
+    - Derive your answers from legitimate sources, and explain like the greatest teacher of all time.
+    - Use headings when helpful.
+    - Put code in fenced blocks with a language tag.
+    - Never wrap the entire response in a single code fence.`;
+
+    const response = await client.responses.create({
+        model: "gpt-5-nano",
+        input: [
+            { role: "system", content: DEVBOT },
+            { role: "user", content: query.trim() }
+        ],
+    })
+    return response.output_text;
+});

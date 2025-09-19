@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { sendToChat } from '../../utils/openai'
+import { callSendToChat } from '../../utils/firebase'
 import ShinyText from '../../components/ShinyText/ShinyText'
 import MarkDown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -20,10 +20,11 @@ function DEVBot() {
     setFetching(true);
     setIsThinking(true);
     try {
-       const r = await sendToChat(query);
-       setResponse(r);
+       const r = await callSendToChat(query);
+       console.log("RESPONSE",r)
+       setResponse(r.data);
     } catch (err) {
-      console.err(err.message);
+      console.error(err.message);
     } finally {
       setFetching(false);
       setIsThinking(false);
@@ -35,10 +36,9 @@ function DEVBot() {
     setQuery(value);
   }
 
-  console.log(isOpen);
 
   return (
-      <div className="flex flex-col w-[25dvw] fixed right-2 bottom-2 z-20">
+      <div className="flex flex-col w-fit fixed right-2 bottom-2 z-20 items-end">
         {/* Condition */}
         {!isOpen ? 
         <div className="mx-auto flex ring-1 ring-black rounded w-fit gap-4 justify-between bg-black px-4 py-2">
@@ -50,14 +50,14 @@ function DEVBot() {
         </div>
         :
         <>
-        <div className="flex ring-1 ring-black rounded-t w-full justify-between bg-black px-4 py-2">
+        <div className="flex ring-1 ring-black rounded-t w-[20vw] justify-between bg-black px-4 py-2">
             <div className="flex gap-1">
                 <span className="text-zinc-300">You are chatting with: </span>
                 <span className="font-semibold text-white">DEVBot!</span>
             </div>
             <button onClick={() => setIsOpen(false)} className="text-white cursor-pointer hover:text-teal-500"><Cross1Icon/></button>
         </div>
-        <div className="bg-white ring-1 ring-zinc-200 p-4 h-[50vh] w-full overflow-scroll overflow-x-auto max-w-none prose prose-pre:whitespace-pre-wrap">
+        <div className="bg-white ring-1 ring-zinc-200 p-4 h-[50vh] w-[20vw] overflow-scroll overflow-x-auto max-w-none prose prose-pre:whitespace-pre-wrap">
         {isThinking &&
           <ShinyText text="Thinking..." disabled={!isThinking} speed={3}/>
         }

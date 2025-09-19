@@ -8,6 +8,7 @@ import Like from '../Like/Like';
 import { doLike } from '../../utils/firebase';
 import 'plyr/dist/plyr.css';
 import Plyr from 'plyr';
+import { addViewCount } from '../../utils/firebase';
 
 // MD
 import MarkDown from 'react-markdown'
@@ -21,7 +22,6 @@ function PostView() {
     const [post, setPost] = useState(null)
     const [likeCount, setLikeCount] = useState(0);
     console.log("Post Data Debugging", post);
-    const viewCount = 55;
 
     useEffect(() => {
         (async () => {
@@ -30,8 +30,8 @@ function PostView() {
             const { posts: p } = await fetchAllPosts({ postId: id, uid: uid });
             setPost(p[0]);
             setLikeCount(p[0].likeCount)
-        } catch (e) {
-            console.log(e);
+        } catch (err) {
+            console.log(err);
         } finally {
             setLoading(false);
             console.log(post);
@@ -48,7 +48,6 @@ function PostView() {
      const handleLike = async (e, authorId, postId) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log(postId)
     
         try{
             await doLike(authorId, postId)
@@ -59,9 +58,13 @@ function PostView() {
       
       }
 
+      const handlePlay = async () => {
+        await addViewCount(post);
+      }
+
     if (loading) return <div className="w-fit mx-auto"><Spinner/></div>
 
-    
+    console.log("Post",post);
 
   return (
     <section className="max-w-screen-xl mx-auto mt-4 mb-4 flex">
@@ -75,7 +78,7 @@ function PostView() {
 
             {post?.videoUrl &&
                 <div className="h-full w-[70%] justify-center items-center">
-                    <video id="player" controls className="h-full w-full">
+                    <video id="player" controls className="h-full w-full" onPlay={handlePlay}>
                         <source src={post?.videoUrl}/>
                     </video>
                 </div>
@@ -100,7 +103,7 @@ function PostView() {
                 {/* Actions / Info*/}
                 <div className="mt-4 mb-4 flex gap-4">
                     {post?.videoUrl && 
-                    <span className="text-base">{viewCount} views</span>}
+                    <span className="text-base">{post?.viewCount || 0} views</span>}
                     <Like handleLike={(e) => handleLike(e, post.userId, post.id)} likes={likeCount}/>
                     {post?.videoMetadata}
                 </div>
