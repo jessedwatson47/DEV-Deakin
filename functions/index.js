@@ -29,8 +29,8 @@ export const createCheckoutSession = onCall({ secrets: [key], enforceAppCheck: f
             quantity: 1,
         }],
         mode: "subscription",
-        success_url: `http://localhost:5173/summary?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: "http://localhost:5173/plans",
+        success_url: `https://devs-at-deakin.netlify.app/summary?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: "https://devs-at-deakin.netlify.app/plans",
         client_reference_id: user.uid
         
     })

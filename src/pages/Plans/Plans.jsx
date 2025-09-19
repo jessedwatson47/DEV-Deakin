@@ -2,9 +2,18 @@ import React from 'react'
 import Card from '../../components/Card/Card'
 import { CheckCircledIcon, CrossCircledIcon, CubeIcon, RocketIcon } from '@radix-ui/react-icons'
 import { callCreateCheckoutSession, stripePromise } from '../../utils/firebase'
+import { useAuth } from '../../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 function Plans() {
+    const { user, userLoading, authLoading } = useAuth();
+    const navigate = useNavigate();
+
     const startCheckout = async () => {
+        if (user.isAnonymous) {
+            navigate('/signup?redirect=/plans');
+            return;
+        }
         try {
             const { data } = await callCreateCheckoutSession();
             const stripe = await stripePromise;
