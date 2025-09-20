@@ -11,7 +11,6 @@ function NewsletterSignUp() {
     const [isSubscribed, setIsSubscribed] = useState(false);
 
     const handleSubscribe = async () => {
-      console.log(email);
       setIsSubmitting(true);
       try {
         const res = await callSubscribeToNewsletter({ email: email.trim().toLowerCase(), displayName: user?.displayName || ""})

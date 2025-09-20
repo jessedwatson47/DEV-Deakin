@@ -62,7 +62,7 @@ function NewPost() {
                 setPost( (prev) => {
                 return {...prev, videoUrl: url }});
             } catch (err) {
-                console.log(err);
+                console.error(err);
                 setIsUploading(false);
             }
         }
@@ -72,12 +72,11 @@ function NewPost() {
             try {
                 url = await uploadImage(file);
                 setImageUrl(url);
-                console.log("image uploaded");
                 setPost( (prev) => {
                 return {...prev, imageUrl: url}});
                 
             } catch (err) {
-                console.log(err);
+                console.error(err);
                 setIsUploading(false);
             }
         }
@@ -128,8 +127,6 @@ function NewPost() {
             setOpen(true);
         }
     };
-
-    console.log(post);
 
   return (
     <>

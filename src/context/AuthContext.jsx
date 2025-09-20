@@ -51,7 +51,7 @@ export function AuthProvider({ children }) {
         const data = await fetchUser(user);
         if (alive) setUserData(data);
       } catch (err) {
-        console.log("Failed to fetch user");
+        console.error("Failed to fetch user");
         if (alive) setUserData(null);
       } finally {
         if (alive) setUserLoading(false);
@@ -66,9 +66,6 @@ export function AuthProvider({ children }) {
     setUser({...auth.currentUser})
     return auth.currentUser;
   }
-
-    console.log("user", user);
-    console.log("userdata", userData);
   return (
     <AuthContext.Provider value={{ user, authLoading, userLoading, logout, userData, refreshUser }}>
       {children}

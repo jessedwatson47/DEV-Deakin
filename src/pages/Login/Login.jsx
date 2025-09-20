@@ -55,7 +55,7 @@ function Login() {
           navigate("/", {replace:true});
           setError("");
         } catch (err) {
-          console.log(err.message);
+          console.error(err.message);
           setError(err.message);
         } finally {
           setSubmitting(false);
@@ -71,12 +71,10 @@ function Login() {
 
         try {
           const res = await continueWithGoogle();
-          console.log("res",res);
           
           if (res?.mfaResolver) {
             setRequireOTP(true);
             setMfaResolver(res.mfaResolver);
-            console.log("INGOOGLE", res.mfaResolver)
             return;
           }
 
@@ -84,8 +82,7 @@ function Login() {
           navigate("/", {replace:true});
           setError("");
         } catch (err) {
-
-          console.log(err.message);
+          console.error(err.message);
           setError(err.message);
         } finally {
           setSubmitting(false);
@@ -99,7 +96,7 @@ function Login() {
         setResetMsg(<p className="text-emerald-500 flex gap-2 items-center justify-center"><CheckCircledIcon/> If an account exists for that email, you'll get a reset link shortly.</p>);
         await sendPasswordReset(contact.email)
       } catch (err) {
-        console.log(err.message);
+        console.error(err.message);
       }
     }
 
@@ -128,8 +125,6 @@ function Login() {
         setSubmitting(false);
       }
     }
-
-    console.log("MFARES",mfaResolver);
      
 
   return (

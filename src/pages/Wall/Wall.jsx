@@ -31,9 +31,9 @@ export default function Wall() {
         setAllPosts(posts);
         setLastVisible(lastVisible);
         setHasMore(hasMore);
-      } catch (e) {
-        console.log(e);
-        setErr(e);
+      } catch (err) {
+        console.error(err);
+        setErr(err);
       } finally {
         setLoading(false);
       }
@@ -78,7 +78,6 @@ export default function Wall() {
       filtered = allPosts;
     }
     setVisiblePosts(filtered);
-    console.log(allPosts);
 }, [allPosts, qParam, fParam]);
 
  
@@ -120,13 +119,12 @@ export default function Wall() {
   const handleLike = async (e, authorId, postId) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log(postId)
 
     try{
       await doLike(authorId, postId)
       setVisiblePosts(prev => prev.map(p => p.id === postId ? { ...p, likeCount: (p.likeCount ?? 0) + 1 } : p));
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   
   }
@@ -147,7 +145,6 @@ export default function Wall() {
   if (err) return <p>Failed to load posts.</p>;
   if (loading) return <WallSkeleton />
 
-  console.log(allPosts);
 
   return (
     <section className="max-w-screen-xl mx-auto mt-4 mb-4 flex">

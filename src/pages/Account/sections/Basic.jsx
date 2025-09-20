@@ -64,7 +64,7 @@ function Basic() {
           setToast({title: "Success!", description: "Display picture updated successfully!", ok: true})
         }
         catch (err) {
-          console.log("Error uploading file / updating display picture", err)
+          console.error("Error uploading file / updating display picture", err)
           setToast({title: "Oops!", description: "Display picture updated failed to update. Please try again.", ok: false})
         } finally {
           setOpen(true);
@@ -78,7 +78,7 @@ function Basic() {
         await updateDisplayName(newDisplayName);
         setToast({title: "Success!", description: `Display name updated succesfully. Hello ${user.displayName}`, ok: true})
       } catch (err) {
-        console.log(err);
+        console.error(err);
         setToast({title: "Oops!", description: `Please try changing your display name again.`, ok: false})
       } finally {
         setEditingName(false);

@@ -32,9 +32,6 @@ function Signup() {
     })
     }
 
-    console.log(contact);
-    console.log(userLoading);
-
    const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -49,7 +46,7 @@ function Signup() {
       try { // Send Email Verification
           await sendVerification(user);
         } catch (err) {
-          console.warn("Failed to send email verification: ", err);
+          console.error("Failed to send email verification: ", err);
         }
       navigate("/check-email", { replace: true });
     } catch (err) {

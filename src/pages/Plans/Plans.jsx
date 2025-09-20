@@ -19,7 +19,7 @@ function Plans() {
             const stripe = await stripePromise;
             await stripe.redirectToCheckout({ sessionId: data.id })
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     }
 

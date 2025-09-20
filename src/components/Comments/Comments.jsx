@@ -20,7 +20,7 @@ function Comments() {
   // subscribe to comments
   useEffect(() => {
     if (!uid || !id) return;
-    const unsub = subscribeToComments(id, uid, setComments, console.log);
+    const unsub = subscribeToComments(id, uid, setComments, console.error);
     return () => unsub();
   }, [uid, id]);
 
@@ -42,7 +42,7 @@ function Comments() {
       await deleteComment(comment);
       setComments((prev) => prev.filter(c => c.id !== comment.id));
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -51,11 +51,10 @@ function Comments() {
       await updateSolution(comment);
       setSolutionId(comment.id);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
-  console.log(comments);
   return (
     <>
       {sortedComments.map(comment => (

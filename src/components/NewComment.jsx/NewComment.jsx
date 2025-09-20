@@ -33,7 +33,7 @@ function NewComment() {
       setComment(prev => ({ ...prev, text: '' }));
       setToast({title: "Success!", description: "You commented.", ok: true})
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setToast({title: "Oops!", description: "Failed to comment, try again.", ok: false})
     } finally {
       setIsSubmitting(false);
@@ -48,9 +48,6 @@ function NewComment() {
     })
   }
 
-
-  console.log(comment);
-  console.log(toast);
   return (
     <>
       {/* Toast */}

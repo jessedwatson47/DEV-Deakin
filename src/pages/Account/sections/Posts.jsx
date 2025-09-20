@@ -17,7 +17,6 @@ function Posts() {
     const [lastVisible, setLastVisible] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
     const pageSize = 10;
-    console.log(selectedPosts);
     
       useEffect(() => {
         (async () => {
@@ -28,9 +27,9 @@ function Posts() {
             setVisiblePosts(all);
             setLastVisible(lastVisible);
             setHasMore(hasMore);
-          } catch (e) {
-            console.log(e);
-            setErr(e);
+          } catch (err) {
+            console.error(err);
+            setErr(err);
           } finally {
             setLoading(false);
           }
@@ -41,7 +40,6 @@ function Posts() {
     if (posts.length > pageSize * pageNumber) {
       const targetPage = pageNumber + 1;
       const next = posts.slice(pageNumber * pageSize, Math.min(targetPage * pageSize, posts.length));
-      console.log("Next debug", next);
       setVisiblePosts(next);
       setPageNumber(prev => prev + 1);
       return;
@@ -59,7 +57,6 @@ function Posts() {
   const handleLoadBack = () => {
     const targetPage = pageNumber - 1;
     const back = posts.slice((targetPage - 1) * pageSize, Math.min(targetPage * pageSize, posts.length));
-    console.log("Back debug", back);
     setVisiblePosts(back);
     setPageNumber(prev => prev - 1)
   }
@@ -87,14 +84,12 @@ function Posts() {
             await deletePosts(selectedPosts);
             setPosts(prev => prev.filter(p => !selectedPosts.includes(p.id)));
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
         finally {
             setIsDeleting(false);
         }
     }
-
-    console.log("posts array length =", posts.length)
 
   return (
     <article className="flex flex-col gap-6 bg-zinc-100 min-h-[50dvh] w-[500px] self-center p-10 rounded">

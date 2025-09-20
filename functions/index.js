@@ -60,10 +60,8 @@ export const stripeWebhook = onRequest({ secrets: [key, wh_secret] }, async (req
         case 'checkout.session.completed':
             {
             const completed = event.data.object;
-            console.log(completed);
             // Update Firestore
             const uid = completed.client_reference_id;
-            console.log(uid);
             const userDocRef = db.doc(`users/${uid}`);
             await userDocRef.set({ plan: "pro", subscriptionStatus: "active" }, { merge: true })
             res.send();
@@ -82,7 +80,6 @@ export const stripeWebhook = onRequest({ secrets: [key, wh_secret] }, async (req
 
 // Resend newsletter + add to subscriber list
 export const subscribeToNewsletter = onCall({ secrets: [RESEND_API_KEY] }, async (req) => {
-    console.log(req.data);
     const data = req.data;
     const uid = req.auth?.uid;
     const email = data?.email;

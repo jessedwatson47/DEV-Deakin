@@ -21,7 +21,6 @@ function PostView() {
     const [loading, setLoading] = useState(false);
     const [post, setPost] = useState(null)
     const [likeCount, setLikeCount] = useState(0);
-    console.log("Post Data Debugging", post);
 
     useEffect(() => {
         (async () => {
@@ -31,10 +30,9 @@ function PostView() {
             setPost(p[0]);
             setLikeCount(p[0].likeCount)
         } catch (err) {
-            console.log(err);
+            console.error(err);
         } finally {
             setLoading(false);
-            console.log(post);
         }
         })();
     }, []);
@@ -53,7 +51,7 @@ function PostView() {
             await doLike(authorId, postId)
             setLikeCount(prev => prev + 1)
         } catch (err) {
-          console.log(err);
+          console.error(err);
         }
       
       }
@@ -63,8 +61,6 @@ function PostView() {
       }
 
     if (loading) return <div className="w-fit mx-auto"><Spinner/></div>
-
-    console.log("Post",post);
 
   return (
     <section className="max-w-screen-xl mx-auto mt-4 mb-4 flex">

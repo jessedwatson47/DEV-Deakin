@@ -18,9 +18,8 @@ function FeaturedPosts() {
           const all = await fetchFeaturedPosts();
           setAllPosts(all);
           setPosts([all[0], all[1], all[2]]);
-          console.log(all);
-        } catch (e) {
-          console.log(e);
+        } catch (err) {
+          console.error(err);
         } finally {
           setLoading(false);
         }

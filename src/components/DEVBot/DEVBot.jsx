@@ -21,7 +21,6 @@ function DEVBot() {
     setIsThinking(true);
     try {
        const r = await callSendToChat(query);
-       console.log("RESPONSE",r)
        setResponse(r.data);
     } catch (err) {
       console.error(err.message);

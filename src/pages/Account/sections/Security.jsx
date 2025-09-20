@@ -30,7 +30,6 @@ function Security() {
     try {
     const res = await genTOTPSecret();
     setTotpSecret(res.totpSecret);
-    console.log(res);
     setTotpSecretKey(res.totpSecret.secretKey);
     setTotpUri(res.totpUri);
     setHasUri(true);
@@ -50,7 +49,7 @@ const handleReauthWithPopup = async () => {
   await handleSecret();
   setShowQrModal(true);
   } catch (err) {
-    console.log(err.message)
+    console.error(err.message)
   }
 }
 
@@ -64,7 +63,7 @@ const handleVerify = async () => {
     setShowQrModal(false);
     setEnabledTOTP(true);
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
   }
 }
 
