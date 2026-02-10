@@ -2,6 +2,8 @@
 
 A full-featured **frontend web application** built with **React** and **Firebase (BaaS)** as part of my university work at Deakin.
 
+**Demo Link:** https://devs-at-deakin.netlify.app/
+
 **NOTE:** *Stripe integration is for **demonstration purposes only** and some features (such as my **DEVBot**) have been disabled to avoid unnecessary costs.*
 
 This project includes user authentication, protected routes, social-style posting, interactions (likes, comments, views), demo Stripe payment flow and a ChatGPT bot. It was designed and implemented end-to-end as a real application as my final project.
